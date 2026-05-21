@@ -7146,6 +7146,73 @@ button[onclick="applyDiscountCode()"]:hover {
 .modal-body strong {
     color: var(--primary);
 }
+
+/* Make Create New Account button text white */
+#signupForm .btn-secondary,
+button.btn-secondary[onclick="switchAuthTab('signup')"],
+.auth-form .btn-secondary {
+    color: #ffffff !important;
+}
+
+/* Also ensure the Login button in signup form (switching to login) text is white */
+#signupForm .btn-secondary,
+.auth-form .btn-secondary {
+    color: #ffffff !important;
+}
+
+/* For the "Create New Account" button specifically */
+#loginForm .btn-secondary {
+    color: #ffffff !important;
+}
+
+/* For any btn-secondary in auth modal */
+.modal .btn-secondary {
+    color: #ffffff !important;
+}
+
+/* Ensure hover state doesn't break */
+.modal .btn-secondary:hover {
+    color: #000000 !important;
+}
+
+/* Make Create New Account button text white, on hover black */
+#loginForm .btn-secondary {
+    background: transparent !important;
+    color: #ffffff !important;
+    border: 1px solid var(--primary) !important;
+}
+
+#loginForm .btn-secondary:hover {
+    background: var(--primary) !important;
+    color: #000000 !important;
+    border-color: var(--primary) !important;
+}
+
+/* For the signup form's "Login to Account" button */
+#signupForm .btn-secondary {
+    background: transparent !important;
+    color: #ffffff !important;
+    border: 1px solid var(--primary) !important;
+}
+
+#signupForm .btn-secondary:hover {
+    background: var(--primary) !important;
+    color: #000000 !important;
+    border-color: var(--primary) !important;
+}
+
+/* Ensure any btn-secondary in auth modal follows same rule */
+#authModal .btn-secondary {
+    background: transparent !important;
+    color: #ffffff !important;
+    border: 1px solid var(--primary) !important;
+}
+
+#authModal .btn-secondary:hover {
+    background: var(--primary) !important;
+    color: #000000 !important;
+    border-color: var(--primary) !important;
+}
     </style>
 </head>
 <body>
@@ -10102,6 +10169,226 @@ function applyNewsletterDiscount() {
         }
     }, 8000);
 }
+
+// Replace your existing checkAuth, updateAuthUI, and login functions with these
+
+function checkAuth() {
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+        user = savedUser;
+        role = localStorage.getItem('role') || 'user';
+        updateAuthUI();
+        loadCartFromStorage();
+    } else {
+        // Ensure auth button is properly initialized even when no user is logged in
+        updateAuthUI();
+    }
+}
+
+function updateAuthUI() {
+    const userInfo = document.getElementById('userInfo');
+    const mobileUserInfo = document.getElementById('mobileUserInfo');
+    const authBtn = document.getElementById('authBtn');
+    const ordersBtn = document.getElementById('ordersBtn');
+    const adminBtn = document.getElementById('adminBtn');
+    const mobileAuthBtn = document.getElementById('mobileAuthBtn');
+    const mobileOrdersBtn = document.getElementById('mobileOrdersBtn');
+    const mobileAdminBtn = document.getElementById('mobileAdminBtn');
+    const mobileUserEmail = document.getElementById('mobileUserEmail');
+    const mobileUserRole = document.getElementById('mobileUserRole');
+    const changePasswordBtn = document.getElementById('changePasswordBtn');
+    const mobileChangePasswordBtn = document.getElementById('mobileChangePasswordBtn');
+    
+    if (user) {
+        // User is logged in
+        userInfo.style.display = 'none';
+        mobileUserInfo.style.display = 'block';
+        mobileUserEmail.textContent = user;
+        mobileUserRole.textContent = role === 'admin' ? 'Admin' : 'User';
+        
+        authBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
+        authBtn.onclick = logout;
+        
+        ordersBtn.style.display = 'flex';
+        
+        mobileAuthBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
+        mobileAuthBtn.onclick = function() { logout(); closeMobileMenu(); };
+        mobileOrdersBtn.style.display = 'flex';
+        
+        changePasswordBtn.style.display = 'flex';
+        mobileChangePasswordBtn.style.display = 'flex';
+        changePasswordBtn.onclick = function() { toggleChangePasswordModal(); };
+        mobileChangePasswordBtn.onclick = function() { toggleChangePasswordModal(); closeMobileMenu(); };
+        
+        if (role === 'admin') {
+            adminBtn.style.display = 'flex';
+            mobileAdminBtn.style.display = 'flex';
+        } else {
+            adminBtn.style.display = 'none';
+            mobileAdminBtn.style.display = 'none';
+        }
+    } else {
+        // User is NOT logged in - ensure login button is properly set
+        userInfo.style.display = 'none';
+        mobileUserInfo.style.display = 'none';
+        
+        // IMPORTANT: Reset button properly for non-logged in state
+        authBtn.innerHTML = '<i class="fas fa-user"></i> Login';
+        authBtn.onclick = function(e) {
+            e.preventDefault();
+            toggleAuthModal();
+        };
+        
+        ordersBtn.style.display = 'none';
+        
+        mobileAuthBtn.innerHTML = '<i class="fas fa-user"></i> Login';
+        mobileAuthBtn.onclick = function() { 
+            toggleAuthModal(); 
+            closeMobileMenu(); 
+        };
+        
+        mobileOrdersBtn.style.display = 'none';
+        mobileAdminBtn.style.display = 'none';
+        adminBtn.style.display = 'none';
+        changePasswordBtn.style.display = 'none';
+        mobileChangePasswordBtn.style.display = 'none';
+    }
+}
+
+async function login() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const loginBtn = document.querySelector('#loginForm .btn-primary');
+    
+    if (!email || !password) {
+        showNotification('Please fill in all fields', 'error');
+        return;
+    }
+    
+    setButtonLoading(loginBtn, true);
+    
+    try {
+        const res = await fetch(API, {
+            method: "POST",
+            body: JSON.stringify({ action: "login", email: email, password: password })
+        });
+        const data = await res.json();
+        
+        if (data.success) {
+            user = email;
+            role = data.role || 'user';
+            localStorage.setItem('user', user);
+            localStorage.setItem('role', role);
+            
+            // Update UI before closing modal
+            updateAuthUI();
+            
+            // Close modal and clear fields
+            toggleAuthModal();
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+            
+            showNotification("Login successful!", 'success');
+            
+            // Redirect to products page
+            showPage('products');
+        } else {
+            showNotification("Invalid email or password", 'error');
+        }
+    } catch (error) {
+        console.error('Login error:', error);
+        showNotification("Login failed. Please try again.", 'error');
+    } finally {
+        setButtonLoading(loginBtn, false);
+    }
+}
+
+// Make sure toggleAuthModal properly resets form states
+function toggleAuthModal() {
+    const modal = document.getElementById('authModal');
+    if (modal.style.display === 'flex') {
+        modal.style.display = 'none';
+        // Reset form fields when closing
+        document.getElementById('email').value = '';
+        document.getElementById('password').value = '';
+        document.getElementById('signupEmail').value = '';
+        document.getElementById('signupPassword').value = '';
+        document.getElementById('signupConfirmPassword').value = '';
+    } else {
+        modal.style.display = 'flex';
+        switchAuthTab('login');
+    }
+}
+
+// Ensure DOM elements are ready before attaching event listeners
+document.addEventListener('DOMContentLoaded', function() {
+    checkAuth();
+    loadProducts();
+    initCarousel();
+    
+    // Get references to file inputs
+    const productImagesInput = document.getElementById('productImages');
+    if (productImagesInput) {
+        productImagesInput.addEventListener('change', handleImageSelection);
+    }
+    
+    const editProductImagesInput = document.getElementById('editProductImages');
+    if (editProductImagesInput) {
+        editProductImagesInput.addEventListener('change', handleEditImageSelection);
+    }
+    
+    // Size checkbox listeners
+    const sizeCheckboxes = document.querySelectorAll('#sizeCheckboxGroup input[type="checkbox"]');
+    sizeCheckboxes.forEach(cb => cb.addEventListener('change', updateSelectedSizesDisplay));
+    
+    const editSizeCheckboxes = document.querySelectorAll('#editSizeCheckboxGroup input[type="checkbox"]');
+    editSizeCheckboxes.forEach(cb => cb.addEventListener('change', updateEditSelectedSizesDisplay));
+    
+    // Hamburger menu
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', toggleMobileMenu);
+    }
+    
+    // Auth button - ensure it's properly initialized
+    const authButton = document.getElementById('authBtn');
+    if (authButton) {
+        // Remove any existing listeners to prevent duplicates
+        const newAuthBtn = authButton.cloneNode(true);
+        authButton.parentNode.replaceChild(newAuthBtn, authButton);
+        newAuthBtn.addEventListener('click', function() {
+            if (user) {
+                logout();
+            } else {
+                toggleAuthModal();
+            }
+        });
+    }
+    
+    // Mobile auth button
+    const mobileAuthButton = document.getElementById('mobileAuthBtn');
+    if (mobileAuthButton) {
+        const newMobileAuthBtn = mobileAuthButton.cloneNode(true);
+        mobileAuthButton.parentNode.replaceChild(newMobileAuthBtn, mobileAuthButton);
+        newMobileAuthBtn.addEventListener('click', function() {
+            if (user) {
+                logout();
+                closeMobileMenu();
+            } else {
+                toggleAuthModal();
+                closeMobileMenu();
+            }
+        });
+    }
+    
+    // Close modals when clicking outside
+    window.addEventListener('click', function(e) {
+        const authModal = document.getElementById('authModal');
+        if (e.target === authModal) {
+            authModal.style.display = 'none';
+        }
+    });
+});
     </script>
 </body>
 </html>
