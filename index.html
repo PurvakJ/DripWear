@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DRIPWEAR - Premium E-Commerce Store</title>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
@@ -7217,8 +7218,146 @@ button.btn-secondary[onclick="switchAuthTab('signup')"],
     color: #000000 !important;
     border-color: var(--primary) !important;
 }
+/* User Dropdown Menu Styles */
+.user-dropdown {
+    position: relative;
+    display: inline-block;
+}
 
+.user-dropdown-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
 
+.dropdown-arrow {
+    font-size: 0.7rem;
+    transition: transform 0.3s ease;
+}
+
+.user-dropdown.active .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: var(--dark);
+    border: 1px solid var(--gray-light);
+    min-width: 220px;
+    border-radius: 0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.user-dropdown.active .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-user-info {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--gray-light);
+    margin-bottom: 8px;
+}
+
+.dropdown-user-email {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary);
+    word-break: break-all;
+}
+
+.dropdown-user-role {
+    font-size: 0.7rem;
+    color: var(--gray);
+    margin-top: 4px;
+    text-transform: uppercase;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 16px;
+    background: transparent;
+    border: none;
+    color: var(--primary);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.dropdown-item i {
+    width: 20px;
+    font-size: 1rem;
+    color: var(--gray);
+}
+
+.dropdown-item:hover {
+    background: var(--light);
+    color: var(--primary);
+}
+
+.dropdown-item:hover i {
+    color: var(--primary);
+}
+
+/* Remove old auth button styles if any */
+#authBtn {
+    display: none !important;
+}
+
+#changePasswordBtn {
+    display: none !important;
+}
+
+/* Mobile dropdown adjustments */
+@media (max-width: 768px) {
+    .user-dropdown {
+        display: none;
+    }
+    
+    /* Keep mobile nav buttons as they were */
+    .mobile-nav #mobileChangePasswordBtn,
+    .mobile-nav #mobileAuthBtn {
+        display: flex !important;
+    }
+}
+
+/* Additional spacing for checkout form fields */
+.checkout-form .form-group input,
+.checkout-form .form-group textarea,
+.checkout-form .form-group select {
+    margin-bottom: 0;
+}
+
+.checkout-form .form-row {
+    margin-bottom: 0;
+}
+
+/* Make house number field stand out slightly */
+#shipHouseNo {
+    background: var(--dark);
+    border: 1px solid var(--gray-light);
+}
+
+/* Responsive adjustments for checkout form */
+@media (max-width: 768px) {
+    .checkout-form .form-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
     </style>
 </head>
 <body>
@@ -7232,11 +7371,6 @@ button.btn-secondary[onclick="switchAuthTab('signup')"],
             
             <div class="logo">
                 <span>DRIPWEAR</span>
-            </div>
-            
-            <div class="user-info" id="userInfo" style="display: none;">
-                <span id="userEmail"></span>
-                <span id="userRole"></span>
             </div>
             
             <div class="nav-buttons">
@@ -7253,15 +7387,32 @@ button.btn-secondary[onclick="switchAuthTab('signup')"],
                 <button class="nav-btn" onclick="showPage('ordersPage')" id="ordersBtn">
                     <i class="fas fa-box"></i> My Orders
                 </button>
-                <button class="nav-btn" id="changePasswordBtn" style="display: none;">
-                    <i class="fas fa-key"></i> Change Password
-                </button>
-                <button class="nav-btn" id="authBtn">
-                    <i class="fas fa-user"></i> Login
-                </button>
                 <button class="nav-btn" onclick="showPage('admin')" id="adminBtn" style="display: none">
                     <i class="fas fa-cog"></i> Admin
                 </button>
+                
+                <!-- User Dropdown Menu -->
+                <div class="user-dropdown" id="userDropdown">
+                    <button class="nav-btn user-dropdown-btn" id="userMenuBtn">
+                        <i class="fas fa-user-circle"></i> Account
+                        <i class="fas fa-chevron-down dropdown-arrow"></i>
+                    </button>
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <div class="dropdown-user-info" id="dropdownUserInfo" style="display: none;">
+                            <div class="dropdown-user-email" id="dropdownUserEmail"></div>
+                            <div class="dropdown-user-role" id="dropdownUserRole"></div>
+                        </div>
+                        <button class="dropdown-item" id="dropdownChangePasswordBtn" style="display: none;" onclick="toggleChangePasswordModal(); closeDropdown();">
+                            <i class="fas fa-key"></i> Change Password
+                        </button>
+                        <button class="dropdown-item" id="dropdownLogoutBtn" style="display: none;" onclick="logout(); closeDropdown();">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                        <button class="dropdown-item" id="dropdownLoginBtn" onclick="toggleAuthModal(); closeDropdown();">
+                            <i class="fas fa-sign-in-alt"></i> Login / Sign Up
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
@@ -7694,9 +7845,11 @@ button.btn-secondary[onclick="switchAuthTab('signup')"],
                             </button>
                         </div>
                     </div>
-                    <button class="btn btn-primary" onclick="login()" style="width: 100%;">
-                        <i class="fas fa-sign-in-alt"></i> Login
-                    </button>
+<!-- In login form -->
+<button class="btn btn-primary" onclick="initiateLogin()" style="width: 100%;">
+    <i class="fas fa-sign-in-alt"></i> Login
+</button>
+
                     <div class="form-divider"><span>New to DRIPWEAR?</span></div>
                     <button class="btn btn-secondary" onclick="switchAuthTab('signup')" style="width: 100%; color:black;">
                         <i class="fas fa-user-plus"></i> Create New Account
@@ -7731,9 +7884,10 @@ button.btn-secondary[onclick="switchAuthTab('signup')"],
                             </button>
                         </div>
                     </div>
-                    <button class="btn btn-primary" onclick="signup()" style="width: 100%;">
-                        <i class="fas fa-user-plus"></i> Create Account
-                    </button>
+<!-- In signup form -->
+<button class="btn btn-primary" onclick="initiateSignup()" style="width: 100%;">
+    <i class="fas fa-user-plus"></i> Create Account
+</button>
                     <div class="form-divider"><span>Already have an account?</span></div>
                     <button class="btn btn-secondary" onclick="switchAuthTab('login')" style="width: 100%; color: black;">
                         <i class="fas fa-sign-in-alt"></i> Login to Account
@@ -8162,6 +8316,37 @@ button.btn-secondary[onclick="switchAuthTab('signup')"],
             </div>
         </div>
     </div>
+    <!-- OTP Verification Modal -->
+<div id="otpModal" class="modal">
+    <div class="modal-content">
+        <button class="close-modal" onclick="closeOTPModal()">&times;</button>
+        <div class="modal-header">
+            <h3><i class="fas fa-envelope"></i> Email Verification</h3>
+        </div>
+        <div class="modal-body">
+            <p style="text-align: center; margin-bottom: 1rem;">
+                We've sent a verification code to your email address.
+            </p>
+            <div class="form-group">
+                <label>Enter OTP Code</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-key"></i>
+                    <input type="text" id="otpInput" placeholder="Enter 6-digit OTP" maxlength="6" autocomplete="off">
+                </div>
+                <div id="otpError" style="color: var(--danger); font-size: 0.8rem; margin-top: 5px; display: none;"></div>
+            </div>
+            <div style="text-align: center; margin: 1rem 0;">
+                <span id="otpTimer" style="font-size: 0.8rem; color: var(--gray);"></span>
+            </div>
+            <button class="btn btn-primary" onclick="verifyOTP()" style="width: 100%; margin-bottom: 10px;">
+                <i class="fas fa-check-circle"></i> Verify OTP
+            </button>
+            <button class="btn btn-secondary" onclick="resendOTP()" style="width: 100%; color: black;">
+                <i class="fas fa-redo-alt"></i> Resend OTP
+            </button>
+        </div>
+    </div>
+</div>
 
     <script>
         // Cloudinary Configuration
@@ -8169,7 +8354,7 @@ button.btn-secondary[onclick="switchAuthTab('signup')"],
         const CLOUDINARY_UPLOAD_PRESET = "images";
         
         // API URL - Update with your actual deployed Apps Script URL
-        const API = "https://script.google.com/macros/s/AKfycbxDPK4uhdBWkljwwMDhlwklQrNR-AKrzncbQiMq30mFIHmSrc-R2fBMbaER4VrY2N8hkw/exec";
+        const API = "https://script.google.com/macros/s/AKfycbxgO5aW_5RmltXUdE01CIpaHxY0vtAdcoUMaHAYgOzBAMAOy7mAKzbnlbZLjjAHiClwjw/exec";
         const RAZORPAY_KEY = "rzp_live_7EQ4tHC0xs8rBy";
         
         // Global variables
@@ -9852,7 +10037,6 @@ button.btn-secondary[onclick="switchAuthTab('signup')"],
                 <div class="full-screen-description">${product.desc || 'No description available for this product.'}</div>
                 <div class="full-screen-sizes"><h3><i class="fas fa-tshirt"></i> Select Size</h3><div class="size-buttons" id="fullScreenSizeButtons">${sizeButtonsHTML}</div></div>
                 <div class="full-screen-static-info"><div class="info-row"><i class="fas fa-truck"></i><strong>Delivery</strong><span class="info-content">4-10 business days <span class="delivery-badge">Pan India</span></span></div>
-                <div class="info-row"><i class="fas fa-exchange-alt"></i><strong>Return Policy</strong><span class="info-content no-return">No return/exchange available</span></div>
                 <div class="info-row"><i class="fas fa-headset"></i><strong>Support</strong><span class="info-content"><strong class="assistance-phone">📱 +91 9780353569</strong> | ✉️ officialtheDRIPWEARin@gmail.com</span></div>
                 <div class="info-row"><i class="fas fa-gavel"></i><strong>Jurisdiction</strong><span class="info-content">Subject to Patiala Jurisdiction</span></div></div>
                 <div class="full-screen-actions">${addToCartButton}<button class="btn btn-secondary" onclick="closeFullScreenProduct()"><i class="fas fa-times"></i> Close</button></div></div></div>`;
@@ -10395,6 +10579,753 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+function updateAuthUI() {
+    const mobileUserInfo = document.getElementById('mobileUserInfo');
+    const mobileUserEmail = document.getElementById('mobileUserEmail');
+    const mobileUserRole = document.getElementById('mobileUserRole');
+    const mobileAuthBtn = document.getElementById('mobileAuthBtn');
+    const mobileOrdersBtn = document.getElementById('mobileOrdersBtn');
+    const mobileAdminBtn = document.getElementById('mobileAdminBtn');
+    const mobileChangePasswordBtn = document.getElementById('mobileChangePasswordBtn');
+    
+    // Dropdown elements
+    const dropdownUserInfo = document.getElementById('dropdownUserInfo');
+    const dropdownUserEmail = document.getElementById('dropdownUserEmail');
+    const dropdownUserRole = document.getElementById('dropdownUserRole');
+    const dropdownChangePasswordBtn = document.getElementById('dropdownChangePasswordBtn');
+    const dropdownLogoutBtn = document.getElementById('dropdownLogoutBtn');
+    const dropdownLoginBtn = document.getElementById('dropdownLoginBtn');
+    const ordersBtn = document.getElementById('ordersBtn');
+    const adminBtn = document.getElementById('adminBtn');
+    
+    if (user) {
+        // User is logged in
+        mobileUserInfo.style.display = 'block';
+        mobileUserEmail.textContent = user;
+        mobileUserRole.textContent = role === 'admin' ? 'Admin' : 'User';
+        
+        // Update dropdown for logged in user
+        dropdownUserInfo.style.display = 'block';
+        dropdownUserEmail.textContent = user;
+        dropdownUserRole.textContent = role === 'admin' ? 'Admin' : 'User';
+        dropdownChangePasswordBtn.style.display = 'flex';
+        dropdownLogoutBtn.style.display = 'flex';
+        dropdownLoginBtn.style.display = 'none';
+        
+        ordersBtn.style.display = 'flex';
+        
+        mobileAuthBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
+        mobileAuthBtn.onclick = function() { logout(); closeMobileMenu(); };
+        mobileOrdersBtn.style.display = 'flex';
+        
+        mobileChangePasswordBtn.style.display = 'flex';
+        mobileChangePasswordBtn.onclick = function() { toggleChangePasswordModal(); closeMobileMenu(); };
+        
+        if (role === 'admin') {
+            adminBtn.style.display = 'flex';
+            mobileAdminBtn.style.display = 'flex';
+        } else {
+            adminBtn.style.display = 'none';
+            mobileAdminBtn.style.display = 'none';
+        }
+    } else {
+        // User is NOT logged in
+        mobileUserInfo.style.display = 'none';
+        
+        // Update dropdown for logged out user
+        dropdownUserInfo.style.display = 'none';
+        dropdownChangePasswordBtn.style.display = 'none';
+        dropdownLogoutBtn.style.display = 'none';
+        dropdownLoginBtn.style.display = 'flex';
+        
+        ordersBtn.style.display = 'none';
+        
+        mobileAuthBtn.innerHTML = '<i class="fas fa-user"></i> Login';
+        mobileAuthBtn.onclick = function() { toggleAuthModal(); closeMobileMenu(); };
+        mobileOrdersBtn.style.display = 'none';
+        mobileAdminBtn.style.display = 'none';
+        adminBtn.style.display = 'none';
+        mobileChangePasswordBtn.style.display = 'none';
+    }
+}
+
+// Add this function to close dropdown
+function closeDropdown() {
+    const userDropdown = document.getElementById('userDropdown');
+    if (userDropdown) {
+        userDropdown.classList.remove('active');
+    }
+}
+
+// Update the DOMContentLoaded event listener - add dropdown toggle
+document.addEventListener('DOMContentLoaded', function() {
+    checkAuth();
+    loadProducts();
+    initCarousel();
+    // Add this inside your DOMContentLoaded event listener
+    initEmailJS();
+    
+    // Get references to file inputs
+    const productImagesInput = document.getElementById('productImages');
+    if (productImagesInput) {
+        productImagesInput.addEventListener('change', handleImageSelection);
+    }
+    
+    const editProductImagesInput = document.getElementById('editProductImages');
+    if (editProductImagesInput) {
+        editProductImagesInput.addEventListener('change', handleEditImageSelection);
+    }
+    
+    // Size checkbox listeners
+    const sizeCheckboxes = document.querySelectorAll('#sizeCheckboxGroup input[type="checkbox"]');
+    sizeCheckboxes.forEach(cb => cb.addEventListener('change', updateSelectedSizesDisplay));
+    
+    const editSizeCheckboxes = document.querySelectorAll('#editSizeCheckboxGroup input[type="checkbox"]');
+    editSizeCheckboxes.forEach(cb => cb.addEventListener('change', updateEditSelectedSizesDisplay));
+    
+    // Hamburger menu
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', toggleMobileMenu);
+    }
+    
+    // User Dropdown Toggle
+    const userMenuBtn = document.getElementById('userMenuBtn');
+    const userDropdown = document.getElementById('userDropdown');
+    
+    if (userMenuBtn && userDropdown) {
+        userMenuBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            userDropdown.classList.toggle('active');
+        });
+    }
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (userDropdown && !userDropdown.contains(e.target)) {
+            userDropdown.classList.remove('active');
+        }
+    });
+    
+    // Close modals when clicking outside
+    window.addEventListener('click', function(e) {
+        const authModal = document.getElementById('authModal');
+        if (e.target === authModal) {
+            authModal.style.display = 'none';
+        }
+    });
+});
+
+function showCheckoutForm() {
+    const container = document.getElementById('cartContent');
+    const subtotal = cartItems.reduce((sum, item) => sum + (Number(item.price) * (item.quantity || 1)), 0);
+    
+    container.innerHTML = `
+        <div class="cart-container">
+            <h3 style="margin-bottom: 1.5rem;">Cart Items (${cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0)} items)</h3>
+            ${cartItems.map((item, index) => {
+                const itemTotal = Number(item.price) * (item.quantity || 1);
+                return `
+                    <div class="cart-item">
+                        <div class="cart-item-image">${item.imageUrl ? `<img src="${item.imageUrl}" alt="${item.name}">` : '<i class="fas fa-box"></i>'}</div>
+                        <div class="cart-item-info">
+                            <h4 class="cart-item-name">${item.name}</h4>
+                            <div><span class="size-badge" style="background: var(--primary); padding: 4px 12px; border-radius: 20px;">Size: ${item.size || 'M'}</span> <span class="size-badge" style="background: var(--gray);">Qty: ${item.quantity || 1}</span></div>
+                        </div>
+                        <div class="cart-item-actions"><span class="cart-item-price">₹${itemTotal.toFixed(2)}</span></div>
+                    </div>
+                `;
+            }).join('')}
+            <div class="checkout-form">
+                <h3 style="margin-bottom: 2rem;"><i class="fas fa-shipping-fast"></i> Shipping Details</h3>
+                <form id="shippingForm">
+                    <div class="form-group">
+                        <label>Full Name *</label>
+                        <input type="text" id="shipName" required placeholder="Enter your full name">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number *</label>
+                        <input type="tel" id="shipPhone" required placeholder="Enter your phone number">
+                    </div>
+                    <div class="form-group">
+                        <label>Address *</label>
+                        <textarea id="shipAddress" rows="2" required placeholder="Street address, landmark, etc."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>House / Flat No. *</label>
+                        <input type="text" id="shipHouseNo" required placeholder="House number, building name, flat number">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>City *</label>
+                            <input type="text" id="shipCity" required placeholder="Enter your city">
+                        </div>
+                        <div class="form-group">
+                            <label>State *</label>
+                            <input type="text" id="shipState" required placeholder="Enter your state">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Pincode *</label>
+                            <input type="text" id="shipPincode" required placeholder="Enter your pincode">
+                        </div>
+                        <div class="form-group">
+                            <label>Country</label>
+                            <input type="text" id="shipCountry" value="India" placeholder="Country">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-ticket-alt"></i> Discount Code</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="discountCode" placeholder="Enter discount code" style="flex: 1;">
+                            <button type="button" class="btn btn-secondary" onclick="applyDiscountCode()" style="padding: 12px 20px; color: black;">Apply</button>
+                        </div>
+                        <div id="discountMessage" style="margin-top: 10px; font-size: 0.9rem;"></div>
+                    </div>
+                    <div class="payment-options">
+                        <div class="payment-option selected" onclick="selectPayment(this, 'online')"><i class="fas fa-credit-card"></i><p>Online Payment (Razorpay)</p></div>
+                        <div class="payment-option" onclick="selectPayment(this, 'cod')"><i class="fas fa-money-bill-wave"></i><p>Cash on Delivery</p></div>
+                    </div>
+                    <div class="cart-total">
+                        <div>
+                            <p>Subtotal: <strong>₹${subtotal.toFixed(2)}</strong></p>
+                            <p id="discountDisplay" style="display: none; color: var(--success);">Discount: -₹<span id="discountAmount">0</span></p>
+                            <h3>Total Amount: <span class="total-amount" id="finalTotal">₹${subtotal.toFixed(2)}</span></h3>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="checkout()" style="margin-top: 1.5rem; width: 100%;"><i class="fas fa-lock"></i> Place Order</button>
+                        <button type="button" class="btn btn-secondary" onclick="renderCart()" style="margin-top: 1rem; width: 100%; color: black;"><i class="fas fa-arrow-left"></i> Back to Cart</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    `;
+    originalSubtotal = subtotal;
+    appliedDiscount = null;
+}
+
+async function checkout() {
+    if (cartItems.length === 0) { showNotification('Your cart is empty!', 'error'); return; }
+    
+    for (const item of cartItems) {
+        const availableStock = item.stock || 0;
+        const requestedQty = item.quantity || 1;
+        if (requestedQty > availableStock) {
+            showNotification(`${item.name}: Only ${availableStock} units available. Please reduce quantity.`, 'error');
+            renderCart();
+            return;
+        }
+    }
+    
+    const checkoutBtn = document.querySelector('#shippingForm .btn-primary');
+    const name = document.getElementById('shipName')?.value;
+    const phone = document.getElementById('shipPhone')?.value;
+    const address = document.getElementById('shipAddress')?.value;
+    const houseNo = document.getElementById('shipHouseNo')?.value;
+    const city = document.getElementById('shipCity')?.value;
+    const state = document.getElementById('shipState')?.value;
+    const pincode = document.getElementById('shipPincode')?.value;
+    const country = document.getElementById('shipCountry')?.value || 'India';
+    
+    if (!name || !phone || !address || !houseNo || !city || !state || !pincode) {
+        showNotification('Please fill in all shipping details', 'error');
+        return;
+    }
+    
+    const selectedPayment = document.querySelector('.payment-option.selected p')?.textContent;
+    const paymentMethod = selectedPayment?.includes('Online') ? 'ONLINE' : 'COD';
+    const fullAddress = `${houseNo}, ${address}, ${city}, ${state} - ${pincode}, ${country}`;
+    const discountData = appliedDiscount;
+    
+    setButtonLoading(checkoutBtn, true);
+    if (paymentMethod === 'COD') await processCOD({name, phone, address: fullAddress}, discountData, checkoutBtn);
+    else await processOnlinePayment({name, phone, address: fullAddress}, discountData, checkoutBtn);
+}
+
+// EmailJS Configuration
+const EMAILJS_SERVICE_ID = "service_3vlktlz";
+const EMAILJS_PUBLIC_KEY = "KcusGlfP3wgOjUhsC";
+const EMAILJS_PRIVATE_KEY = "W1DA2q14mYxl790vdxNL5";
+
+// OTP Variables
+let currentOtp = null;
+let otpEmail = null;
+let otpTimeout = null;
+let pendingAction = null; // 'login' or 'signup'
+let pendingUserData = null;
+
+// Initialize EmailJS
+function initEmailJS() {
+    emailjs.init({
+        publicKey: EMAILJS_PUBLIC_KEY,
+    });
+}
+
+// Generate random OTP
+function generateOTP() {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+// Send OTP via EmailJS
+async function sendOTPEmail(email, otp) {
+    try {
+        const templateParams = {
+            to_email: email,
+            otp_code: otp,
+            subject: "DRIPWEAR - Email Verification OTP",
+            message: `Your OTP for verification is: ${otp}\n\nThis OTP is valid for 5 minutes.\n\nIf you didn't request this, please ignore this email.`
+        };
+        
+        const response = await emailjs.send(EMAILJS_SERVICE_ID, "template_otp", templateParams);
+        return { success: true };
+    } catch (error) {
+        console.error("EmailJS Error:", error);
+        return { success: false, error: error.text };
+    }
+}
+
+// Show OTP Modal
+function showOTPModal(email, action, userData = null) {
+    otpEmail = email;
+    pendingAction = action;
+    pendingUserData = userData;
+    
+    // Generate and send OTP
+    currentOtp = generateOTP();
+    
+    // Send email
+    sendOTPEmail(email, currentOtp).then(result => {
+        if (!result.success) {
+            showNotification("Failed to send OTP. Please try again.", "error");
+        } else {
+            showNotification(`OTP sent to ${email}`, "success");
+        }
+    });
+    
+    // Start OTP timer (5 minutes)
+    startOtpTimer();
+    
+    // Show modal
+    const modal = document.getElementById('otpModal');
+    if (modal) {
+        modal.style.display = 'flex';
+    }
+    
+    // Clear previous OTP input
+    document.getElementById('otpInput').value = '';
+    document.getElementById('otpError').style.display = 'none';
+}
+
+// Start OTP countdown timer
+function startOtpTimer() {
+    let timeLeft = 300; // 5 minutes in seconds
+    const timerElement = document.getElementById('otpTimer');
+    
+    if (otpTimeout) clearInterval(otpTimeout);
+    
+    otpTimeout = setInterval(() => {
+        if (timeLeft <= 0) {
+            clearInterval(otpTimeout);
+            if (timerElement) {
+                timerElement.innerHTML = "OTP expired. Please request a new one.";
+                timerElement.style.color = "var(--danger)";
+            }
+            currentOtp = null;
+        } else {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            if (timerElement) {
+                timerElement.innerHTML = `OTP valid for: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+                timerElement.style.color = "var(--gray)";
+            }
+            timeLeft--;
+        }
+    }, 1000);
+}
+
+// Resend OTP
+async function resendOTP() {
+    if (!otpEmail) {
+        showNotification("Email not found. Please try again.", "error");
+        return;
+    }
+    
+    currentOtp = generateOTP();
+    const result = await sendOTPEmail(otpEmail, currentOtp);
+    
+    if (result.success) {
+        showNotification(`New OTP sent to ${otpEmail}`, "success");
+        
+        // Reset timer
+        if (otpTimeout) clearInterval(otpTimeout);
+        startOtpTimer();
+        
+        document.getElementById('otpError').style.display = 'none';
+        document.getElementById('otpInput').value = '';
+    } else {
+        showNotification("Failed to send OTP. Please try again.", "error");
+    }
+}
+
+// Verify OTP
+async function verifyOTP() {
+    const enteredOtp = document.getElementById('otpInput').value.trim();
+    const errorElement = document.getElementById('otpError');
+    
+    if (!enteredOtp) {
+        errorElement.textContent = "Please enter the OTP";
+        errorElement.style.display = 'block';
+        return;
+    }
+    
+    if (enteredOtp !== currentOtp) {
+        errorElement.textContent = "Invalid OTP. Please try again.";
+        errorElement.style.display = 'block';
+        return;
+    }
+    
+    errorElement.style.display = 'none';
+    
+    // Close OTP modal
+    closeOTPModal();
+    
+    // Clear timer
+    if (otpTimeout) clearInterval(otpTimeout);
+    
+    // Proceed with the pending action
+    if (pendingAction === 'login') {
+        await completeLogin();
+    } else if (pendingAction === 'signup') {
+        await completeSignup();
+    }
+}
+
+// Close OTP Modal
+function closeOTPModal() {
+    const modal = document.getElementById('otpModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+    currentOtp = null;
+    otpEmail = null;
+    if (otpTimeout) clearInterval(otpTimeout);
+}
+
+// Updated login function with OTP
+async function initiateLogin() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const loginBtn = document.querySelector('#loginForm .btn-primary');
+    
+    if (!email || !password) {
+        showNotification('Please fill in all fields', 'error');
+        return;
+    }
+    
+    setButtonLoading(loginBtn, true);
+    
+    try {
+        // First verify if user exists
+        const res = await fetch(API, {
+            method: "POST",
+            body: JSON.stringify({ action: "checkUserExists", email: email })
+        });
+        const data = await res.json();
+        
+        if (!data.exists) {
+            showNotification("User not found. Please sign up first.", "error");
+            setButtonLoading(loginBtn, false);
+            return;
+        }
+        
+        // Store credentials for later
+        window.pendingLoginData = { email, password };
+        
+        // Send OTP
+        await showOTPModal(email, 'login');
+        
+    } catch (error) {
+        console.error('Login initiation error:', error);
+        showNotification("Failed to initiate login. Please try again.", "error");
+    } finally {
+        setButtonLoading(loginBtn, false);
+    }
+}
+
+// Complete login after OTP verification
+async function completeLogin() {
+    const { email, password } = window.pendingLoginData;
+    const loginBtn = document.querySelector('#loginForm .btn-primary');
+    
+    setButtonLoading(loginBtn, true);
+    
+    try {
+        const res = await fetch(API, {
+            method: "POST",
+            body: JSON.stringify({ action: "login", email: email, password: password })
+        });
+        const data = await res.json();
+        
+        if (data.success) {
+            user = email;
+            role = data.role || 'user';
+            localStorage.setItem('user', user);
+            localStorage.setItem('role', role);
+            
+            updateAuthUI();
+            toggleAuthModal();
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+            
+            showNotification("Login successful!", 'success');
+            showPage('products');
+        } else {
+            showNotification("Invalid email or password", 'error');
+        }
+    } catch (error) {
+        console.error('Login error:', error);
+        showNotification("Login failed. Please try again.", 'error');
+    } finally {
+        setButtonLoading(loginBtn, false);
+        window.pendingLoginData = null;
+    }
+}
+
+// Updated signup function with OTP
+async function initiateSignup() {
+    const email = document.getElementById('signupEmail').value;
+    const password = document.getElementById('signupPassword').value;
+    const confirmPassword = document.getElementById('signupConfirmPassword').value;
+    const signupBtn = document.querySelector('#signupForm .btn-primary');
+    
+    if (!email || !password) {
+        showNotification('Please fill in all fields', 'error');
+        return;
+    }
+    
+    if (password !== confirmPassword) {
+        showNotification('Passwords do not match', 'error');
+        return;
+    }
+    
+    if (password.length < 6) {
+        showNotification('Password must be at least 6 characters long', 'error');
+        return;
+    }
+    
+    setButtonLoading(signupBtn, true);
+    
+    try {
+        // Check if user already exists
+        const res = await fetch(API, {
+            method: "POST",
+            body: JSON.stringify({ action: "checkUserExists", email: email })
+        });
+        const data = await res.json();
+        
+        if (data.exists) {
+            showNotification("User already exists. Please login instead.", "error");
+            setButtonLoading(signupBtn, false);
+            return;
+        }
+        
+        // Store signup data for later
+        window.pendingSignupData = { email, password };
+        
+        // Send OTP
+        await showOTPModal(email, 'signup');
+        
+    } catch (error) {
+        console.error('Signup initiation error:', error);
+        showNotification("Failed to initiate signup. Please try again.", "error");
+    } finally {
+        setButtonLoading(signupBtn, false);
+    }
+}
+
+// Complete signup after OTP verification
+async function completeSignup() {
+    const { email, password } = window.pendingSignupData;
+    const signupBtn = document.querySelector('#signupForm .btn-primary');
+    
+    setButtonLoading(signupBtn, true);
+    
+    try {
+        const res = await fetch(API, {
+            method: "POST",
+            body: JSON.stringify({ action: "signup", email: email, password: password, name: "" })
+        });
+        const data = await res.json();
+        
+        if (data.success) {
+            showNotification("Account created successfully! Please login.", 'success');
+            switchAuthTab('login');
+            document.getElementById('email').value = email;
+            document.getElementById('signupEmail').value = '';
+            document.getElementById('signupPassword').value = '';
+            document.getElementById('signupConfirmPassword').value = '';
+        } else {
+            showNotification(data.error || "Error creating account", 'error');
+        }
+    } catch (error) {
+        console.error('Signup error:', error);
+        showNotification("Error creating account", 'error');
+    } finally {
+        setButtonLoading(signupBtn, false);
+        window.pendingSignupData = null;
+    }
+}
+
+// Update the login and signup button onclick handlers
+// Replace existing login() and signup() calls with these
+
+// EmailJS Configuration
+const EMAILJS_TEMPLATE_ID = "template_6yxtsv6"; // Your template ID
+
+// Initialize EmailJS
+function initEmailJS() {
+    emailjs.init({
+        publicKey: EMAILJS_PUBLIC_KEY,
+    });
+    console.log("EmailJS initialized");
+}
+
+// Generate random OTP
+function generateOTP() {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+// Send OTP via EmailJS
+async function sendOTPEmail(email, otp) {
+    try {
+        // Get current time + 15 minutes
+        const expiryTime = new Date();
+        expiryTime.setMinutes(expiryTime.getMinutes() + 15);
+        const formattedTime = expiryTime.toLocaleTimeString('en-IN', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        });
+        
+        const templateParams = {
+            email: email,  // Make sure this matches your template variable {{email}}
+            passcode: otp,  // Make sure this matches your template variable {{passcode}}
+            time: formattedTime  // Make sure this matches your template variable {{time}}
+        };
+        
+        console.log("Sending OTP to:", email);
+        console.log("OTP Code:", otp);
+        console.log("Template params:", templateParams);
+        
+        const response = await emailjs.send(
+            EMAILJS_SERVICE_ID, 
+            EMAILJS_TEMPLATE_ID, 
+            templateParams
+        );
+        
+        console.log("EmailJS response:", response);
+        return { success: true, response: response };
+    } catch (error) {
+        console.error("EmailJS Error Details:", error);
+        return { success: false, error: error.text || error.message };
+    }
+}
+
+// Test EmailJS connection
+async function testEmailJS() {
+    try {
+        const testResult = await emailjs.send(
+            EMAILJS_SERVICE_ID,
+            EMAILJS_TEMPLATE_ID,
+            {
+                email: "test@example.com",
+                passcode: "123456",
+                time: "2:30 PM"
+            }
+        );
+        console.log("EmailJS test successful:", testResult);
+        return true;
+    } catch (error) {
+        console.error("EmailJS test failed:", error);
+        return false;
+    }
+}
+
+// Call this when page loads to test
+document.addEventListener('DOMContentLoaded', function() {
+    initEmailJS();
+    setTimeout(() => {
+        testEmailJS();
+    }, 2000);
+});
+
+// In showOTPModal function, update the notification message
+function showOTPModal(email, action, userData = null) {
+    otpEmail = email;
+    pendingAction = action;
+    pendingUserData = userData;
+    
+    // Generate and send OTP
+    currentOtp = generateOTP();
+    
+    // Send email with better error handling
+    sendOTPEmail(email, currentOtp).then(result => {
+        if (!result.success) {
+            console.error("Failed to send OTP:", result.error);
+            showNotification("Failed to send OTP. Please check console for errors.", "error");
+            // Still show modal so user can try resend
+        } else {
+            console.log("OTP sent successfully!");
+            showNotification(`OTP sent to ${email}`, "success");
+        }
+    }).catch(err => {
+        console.error("Unexpected error:", err);
+        showNotification("Error sending OTP. Please try again.", "error");
+    });
+    
+    // Start OTP timer (15 minutes as per your template)
+    startOtpTimer();
+    
+    // Show modal
+    const modal = document.getElementById('otpModal');
+    if (modal) {
+        modal.style.display = 'flex';
+    }
+    
+    // Clear previous OTP input
+    document.getElementById('otpInput').value = '';
+    document.getElementById('otpError').style.display = 'none';
+}
+
+// Update timer to 15 minutes
+function startOtpTimer() {
+    let timeLeft = 900; // 15 minutes in seconds
+    const timerElement = document.getElementById('otpTimer');
+    
+    if (otpTimeout) clearInterval(otpTimeout);
+    
+    otpTimeout = setInterval(() => {
+        if (timeLeft <= 0) {
+            clearInterval(otpTimeout);
+            if (timerElement) {
+                timerElement.innerHTML = "OTP expired. Please request a new one.";
+                timerElement.style.color = "var(--danger)";
+            }
+            currentOtp = null;
+        } else {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            if (timerElement) {
+                timerElement.innerHTML = `OTP valid for: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+                timerElement.style.color = "var(--gray)";
+            }
+            timeLeft--;
+        }
+    }, 1000);
+}
+
+
     </script>
 </body>
 </html>
