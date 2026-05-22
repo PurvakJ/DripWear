@@ -7358,6 +7358,161 @@ button.btn-secondary[onclick="switchAuthTab('signup')"],
         gap: 1rem;
     }
 }
+
+/* Fix for Change Password Modal - Prevent Logo Overlap */
+#changePasswordModal .modal-content {
+    position: relative;
+    overflow-y: auto;
+    max-height: 90vh;
+}
+
+#changePasswordModal .modal-body {
+    padding: 1.5rem;
+    padding-top: 0.5rem;
+}
+
+/* Ensure proper spacing for input fields in change password modal */
+#changePasswordModal .form-group {
+    margin-bottom: 1.2rem;
+    position: relative;
+}
+
+#changePasswordModal .input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+#changePasswordModal .input-with-icon input {
+    width: 100%;
+    padding: 12px 45px 12px 45px;
+    background: var(--dark);
+    border: 1px solid var(--gray-light);
+    color: var(--primary);
+    font-size: 0.9rem;
+    border-radius: 0;
+}
+
+#changePasswordModal .input-with-icon i:first-child {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray);
+    z-index: 1;
+}
+
+#changePasswordModal .password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--gray);
+    z-index: 1;
+    padding: 0;
+}
+
+#changePasswordModal .password-toggle i {
+    font-size: 1rem;
+}
+
+/* Ensure the modal content doesn't overflow */
+#changePasswordModal .modal-header {
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid var(--gray-light);
+}
+
+#changePasswordModal .modal-header h3 {
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+#changePasswordModal .close-modal {
+    top: 15px;
+    right: 20px;
+    font-size: 1.3rem;
+}
+
+/* Button styling inside change password modal */
+#changePasswordModal .btn-primary {
+    width: 100%;
+    margin-top: 0.5rem;
+    background: var(--primary);
+    color: var(--dark);
+    border: none;
+    padding: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+#changePasswordModal .btn-primary:hover {
+    background: var(--gray);
+    color: var(--dark);
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+    #changePasswordModal .modal-content {
+        width: 95%;
+        max-width: 95%;
+    }
+    
+    #changePasswordModal .modal-body {
+        padding: 1rem;
+    }
+    
+    #changePasswordModal .input-with-icon input {
+        padding: 10px 40px 10px 40px;
+        font-size: 0.85rem;
+    }
+    
+    #changePasswordModal .input-with-icon i:first-child {
+        left: 12px;
+        font-size: 0.85rem;
+    }
+    
+    #changePasswordModal .password-toggle {
+        right: 12px;
+    }
+    
+    #changePasswordModal .password-toggle i {
+        font-size: 0.85rem;
+    }
+}
+
+/* Fix for any other modals that might have similar issues */
+.modal .input-with-icon {
+    position: relative;
+    width: 100%;
+}
+
+.modal .input-with-icon input {
+    width: 100%;
+    padding-left: 45px;
+    padding-right: 45px;
+}
+
+.modal .input-with-icon > i:first-child {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.modal .password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+}
     </style>
 </head>
 <body>
