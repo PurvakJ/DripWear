@@ -7690,46 +7690,7 @@ button.btn-secondary[onclick="switchAuthTab('signup')"],
             
             <!-- Filter Bar -->
             <div class="filter-bar">
-                <div class="filter-row">
-                    <div class="filter-group">
-                        <label><i class="fas fa-search"></i> Search Products</label>
-                        <input type="text" id="searchInput" placeholder="Search by name or description..." onkeyup="applyFilters()">
-                    </div>
-                    
-                    <div class="filter-group">
-                        <label><i class="fas fa-filter"></i> Category</label>
-                        <select id="categorySelect" onchange="applyFilters()">
-                            <option value="all">All Categories</option>
-                        </select>
-                    </div>
-                    
-                    <div class="filter-group">
-                        <label><i class="fas fa-sort"></i> Sort By</label>
-                        <select id="sortSelect" onchange="applyFilters()">
-                            <option value="newest">Newest First</option>
-                            <option value="oldest">Oldest First</option>
-                            <option value="price_low">Price: Low to High</option>
-                            <option value="price_high">Price: High to Low</option>
-                            <option value="name_asc">Name: A to Z</option>
-                            <option value="name_desc">Name: Z to A</option>
-                        </select>
-                    </div>
-                    
-                    <div class="filter-group">
-                        <label><i class="fas fa-rupee-sign"></i> Price Range (₹)</label>
-                        <div class="price-range">
-                            <input type="number" id="minPrice" placeholder="Min" value="" onkeyup="applyFilters()">
-                            <span>to</span>
-                            <input type="number" id="maxPrice" placeholder="Max" value="" onkeyup="applyFilters()">
-                        </div>
-                    </div>
-                    
-                    <div class="filter-actions">
-                        <button class="btn btn-outline" onclick="resetFilters()">
-                            <i class="fas fa-undo-alt"></i> Reset
-                        </button>
-                    </div>
-                </div>
+
                 <div class="results-count" id="resultsCount">Showing 0 products</div>
             </div>
             
