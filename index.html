@@ -7768,6 +7768,1550 @@ button.btn-secondary[onclick="switchAuthTab('signup')"],
         justify-content: center;
     }
 }
+
+/* ==================== COLOR SCHEME INVERTED (Light Theme with Dark Text) ==================== */
+
+/* Override root variables for Light Theme */
+:root {
+    --primary: #b87c4f;
+    --primary-dark: #9a623d;
+    --primary-light: #d4a373;
+    --secondary: #f8f9fa;
+    --dark: #ffffff;
+    --light: #f8f9fa;
+    --gray: #6c757d;
+    --gray-light: #e9ecef;
+    --success: #28a745;
+    --danger: #dc3545;
+    --warning: #ffc107;
+    --info: #17a2b8;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 4px 20px rgba(0,0,0,0.08);
+    --shadow-hover: 0 8px 30px rgba(0,0,0,0.12);
+    --transition: all 0.3s ease;
+}
+
+/* Body background and text color */
+body {
+    background: #f8f9fa;
+    color: #1a1a2e;
+}
+
+/* Header - Light background with dark text */
+header {
+    background: white;
+    border-bottom: 1px solid var(--gray-light);
+    box-shadow: var(--shadow);
+}
+
+.logo span {
+    color: var(--primary);
+    -webkit-text-fill-color: var(--primary);
+    background: none;
+    text-shadow: none;
+}
+
+.logo span::after {
+    background: linear-gradient(90deg, var(--primary), transparent);
+}
+
+/* Navigation buttons */
+.nav-btn {
+    color: #1a1a2e;
+}
+
+.nav-btn:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.cart-count {
+    background: var(--primary);
+    color: white;
+}
+
+/* Stats Bar */
+.stats-bar {
+    background: white;
+}
+
+.stat-number {
+    color: var(--primary);
+}
+
+.stat-label {
+    color: var(--gray);
+}
+
+/* Section Titles */
+.section-title {
+    color: #1a1a2e;
+}
+
+/* Filter Bar */
+.filter-bar {
+    background: white;
+}
+
+.filter-group label {
+    color: var(--gray);
+}
+
+.filter-group input, 
+.filter-group select {
+    background: white;
+    color: #1a1a2e;
+    border: 1px solid var(--gray-light);
+}
+
+/* Product Cards - Light background with dark text */
+.product-card {
+    background: white;
+    color: #1a1a2e;
+    border: 1px solid var(--gray-light);
+    box-shadow: var(--shadow);
+}
+
+.product-card .product-name,
+.product-card .product-desc,
+.product-card .product-price,
+.product-card .product-actual-price,
+.product-card .product-original-price {
+    color: #1a1a2e !important;
+}
+
+.product-card .product-name:hover {
+    color: var(--primary);
+}
+
+.product-card .product-desc {
+    color: var(--gray);
+}
+
+.product-card .product-original-price {
+    color: #6c757d !important;
+}
+
+.product-card .product-actual-price {
+    color: var(--primary) !important;
+}
+
+.product-card .stock-info {
+    background: var(--gray-light);
+    color: var(--gray);
+}
+
+.product-card .stock-info.out-of-stock {
+    background: #fee;
+    color: var(--danger);
+}
+
+.product-card .size-selector label {
+    color: var(--gray);
+}
+
+.product-card .size-input {
+    background: white;
+    color: #1a1a2e;
+    border: 1px solid var(--gray-light);
+}
+
+.product-card .size-input option {
+    background: white;
+    color: #1a1a2e;
+}
+
+.product-card .quantity-input {
+    background: white;
+    color: #1a1a2e;
+    border: 1px solid var(--gray-light);
+}
+
+/* Product Category Badge */
+.product-card .product-category {
+    background: rgba(0,0,0,0.7);
+    color: white;
+}
+
+/* Image Count Badge */
+.product-card .image-count-badge {
+    background: rgba(0,0,0,0.6);
+    color: white;
+}
+
+/* Buttons */
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    color: white;
+}
+
+.btn-secondary {
+    background: white;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+}
+
+.btn-secondary:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: white;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--gray-light);
+    color: var(--gray);
+}
+
+.btn-outline:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+/* Cart Container */
+.cart-container {
+    background: white;
+}
+
+.cart-item {
+    border-bottom: 1px solid var(--gray-light);
+}
+
+.cart-item-info h4 {
+    color: #1a1a2e;
+}
+
+.cart-item-info p {
+    color: var(--gray);
+}
+
+.cart-item-info .size-badge {
+    background: var(--primary);
+    color: white;
+}
+
+/* Cart Quantity Buttons - Dark background with white text */
+.cart-item-actions .btn-secondary,
+.quantity-btn {
+    background: #1a1a2e !important;
+    color: white !important;
+    border: 1px solid var(--gray-light) !important;
+}
+
+.cart-item-actions .btn-secondary:hover,
+.quantity-btn:hover {
+    background: var(--primary) !important;
+    color: white !important;
+}
+
+.cart-item-actions .btn-secondary i,
+.quantity-btn i {
+    color: white !important;
+}
+
+.cart-item-actions .btn-secondary:hover i,
+.quantity-btn:hover i {
+    color: white !important;
+}
+
+.cart-item-price {
+    color: var(--primary);
+}
+
+/* Cart Total Section */
+.cart-total {
+    border-top: 2px solid var(--primary);
+}
+
+.cart-total h3 {
+    color: #1a1a2e;
+}
+
+.total-amount {
+    color: var(--primary);
+}
+
+/* Checkout Form */
+.checkout-form {
+    border-top: 1px solid var(--gray-light);
+}
+
+.form-group label {
+    color: #1a1a2e;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    background: white;
+    color: #1a1a2e;
+    border: 1px solid var(--gray-light);
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: var(--primary);
+}
+
+/* Payment Options */
+.payment-option {
+    background: white;
+    color: #1a1a2e;
+    border: 1px solid var(--gray-light);
+}
+
+.payment-option.selected {
+    border-color: var(--primary);
+    background: rgba(184,124,79,0.05);
+}
+
+.payment-option i {
+    color: var(--primary);
+}
+
+/* Order Cards */
+.order-card {
+    background: white;
+    box-shadow: var(--shadow);
+}
+
+.order-header {
+    border-bottom: 1px solid var(--gray-light);
+}
+
+.order-id {
+    color: var(--primary);
+}
+
+.order-address {
+    background: var(--gray-light);
+}
+
+.order-address p {
+    color: #1a1a2e;
+}
+
+.order-item {
+    border-bottom: 1px solid var(--gray-light);
+    color: var(--gray);
+}
+
+.order-total {
+    border-top: 1px solid var(--gray-light);
+    color: var(--primary);
+}
+
+/* Admin Dashboard */
+.admin-tab {
+    background: var(--gray-light);
+    color: #1a1a2e;
+}
+
+.admin-tab.active {
+    background: var(--primary);
+    color: white;
+}
+
+.admin-product-item {
+    background: white;
+    box-shadow: var(--shadow);
+}
+
+.admin-product-info h4 {
+    color: #1a1a2e;
+}
+
+/* Add Product Form */
+.add-product-form {
+    background: white;
+}
+
+.add-product-form .form-control {
+    background: white;
+    border: 1px solid var(--gray-light);
+    color: #1a1a2e;
+}
+
+/* Image Upload Section */
+.image-upload-section {
+    border: 1px dashed var(--gray-light);
+    background: white;
+}
+
+.file-input-label {
+    background: var(--primary);
+    color: white !important;
+}
+
+.file-input-label i {
+    color: white !important;
+}
+
+.file-input-label:hover {
+    background: var(--primary-dark);
+}
+
+.helper-text {
+    color: var(--gray);
+}
+
+/* Size Checkboxes */
+.size-checkbox {
+    background: white;
+    border: 1px solid var(--gray-light);
+    color: #1a1a2e;
+}
+
+.size-checkbox input {
+    accent-color: var(--primary);
+}
+
+.size-tag {
+    background: var(--primary);
+    color: white;
+}
+
+/* Testimonials */
+.testimonial-card {
+    background: white;
+    box-shadow: var(--shadow);
+}
+
+.testimonial-author {
+    color: var(--primary);
+}
+
+/* Feature Callout */
+.feature-callout {
+    background: white;
+}
+
+.feature-item {
+    color: #1a1a2e;
+}
+
+.feature-item i {
+    color: var(--primary);
+}
+
+/* Instagram Feature */
+.instagram-feature .feature-text h2 {
+    color: #1a1a2e;
+}
+
+.instagram-feature .feature-text p {
+    color: var(--gray);
+}
+
+.instagram-feature .feature-text .btn-instagram {
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+.instagram-feature .feature-text .btn-instagram:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.instagram-feature .feature-images .image-item {
+    background: white;
+    border: 1px solid var(--gray-light);
+}
+
+/* Newsletter Section */
+.newsletter-section {
+    background: white;
+}
+
+.newsletter-content h3 {
+    color: #1a1a2e;
+}
+
+.newsletter-form input {
+    background: white;
+    border: 1px solid var(--gray-light);
+    color: #1a1a2e;
+}
+
+.newsletter-form button {
+    background: var(--primary);
+    color: white;
+}
+
+.newsletter-form button:hover {
+    background: var(--primary-dark);
+}
+
+/* Footer - Light theme */
+.site-footer {
+    background: white;
+    border-top: 1px solid var(--gray-light);
+}
+
+.footer-column h4 {
+    color: #1a1a2e;
+}
+
+.footer-column p {
+    color: var(--gray);
+}
+
+.footer-column ul li a {
+    color: var(--gray);
+}
+
+.footer-column ul li a:hover {
+    color: var(--primary);
+}
+
+.social-links a {
+    border: 1px solid var(--gray-light);
+    color: var(--primary);
+}
+
+.social-links a:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.footer-newsletter input {
+    background: white;
+    border: 1px solid var(--gray-light);
+    color: #1a1a2e;
+}
+
+.footer-newsletter button {
+    background: var(--primary);
+    color: white;
+}
+
+.footer-newsletter button:hover {
+    background: var(--primary-dark);
+}
+
+.payment-methods span {
+    color: var(--gray);
+}
+
+.payment-icons {
+    color: var(--gray);
+}
+
+.payment-icons i:hover {
+    color: var(--primary);
+}
+
+.footer-bottom {
+    border-top: 1px solid var(--gray-light);
+}
+
+.footer-bottom p {
+    color: var(--gray);
+}
+
+/* Modals */
+.modal-content {
+    background: white;
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--gray-light);
+}
+
+.modal-header h3 {
+    color: #1a1a2e;
+}
+
+.modal-body .form-group label {
+    color: #1a1a2e;
+}
+
+.modal-body .form-control {
+    background: white;
+    border: 1px solid var(--gray-light);
+    color: #1a1a2e;
+}
+
+/* Auth Modal */
+.auth-tab {
+    background: var(--gray-light);
+    color: #1a1a2e;
+}
+
+.auth-tab.active {
+    background: var(--primary);
+    color: white;
+}
+
+.auth-form h3 {
+    color: #1a1a2e;
+}
+
+.input-with-icon input {
+    background: white;
+    border: 1px solid var(--gray-light);
+    color: #1a1a2e;
+}
+
+.input-with-icon i {
+    color: var(--gray);
+}
+
+.password-toggle {
+    color: var(--gray);
+}
+
+.form-divider span {
+    background: white;
+    color: var(--gray);
+}
+
+.form-divider::before {
+    background: var(--gray-light);
+}
+
+/* Full Screen Product Modal */
+.full-screen-content {
+    background: white;
+}
+
+.full-screen-details {
+    background: white;
+    color: #1a1a2e;
+}
+
+.full-screen-details h2 {
+    color: #1a1a2e;
+}
+
+.full-screen-category {
+    background: var(--gray-light);
+    color: var(--gray);
+}
+
+.full-screen-actual-price {
+    color: var(--primary);
+}
+
+.full-screen-original-price {
+    color: var(--gray);
+}
+
+.full-screen-description {
+    color: var(--gray);
+}
+
+.full-screen-sizes h3 {
+    color: #1a1a2e;
+}
+
+.size-btn {
+    background: white;
+    border: 1px solid var(--gray-light);
+    color: #1a1a2e;
+}
+
+.size-btn:hover {
+    background: var(--gray-light);
+}
+
+.size-btn.selected {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.full-screen-static-info {
+    background: var(--gray-light);
+}
+
+.info-row {
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.info-row i {
+    color: var(--primary);
+}
+
+.info-row strong {
+    color: #1a1a2e;
+}
+
+.info-content {
+    color: var(--gray);
+}
+
+/* Notifications */
+.notification {
+    background: white;
+    color: #1a1a2e;
+    border: 1px solid var(--gray-light);
+}
+
+.notification.success {
+    background: #d4edda;
+    color: #155724;
+    border-color: var(--success);
+}
+
+.notification.error {
+    background: #f8d7da;
+    color: #721c24;
+    border-color: var(--danger);
+}
+
+.notification.warning {
+    background: #fff3cd;
+    color: #856404;
+    border-color: var(--warning);
+}
+
+.notification.info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border-color: var(--info);
+}
+
+/* Required Login Box */
+.required-login {
+    background: white;
+}
+
+.required-login h3 {
+    color: #1a1a2e;
+}
+
+.required-login p {
+    color: var(--gray);
+}
+
+/* No Products Box */
+.no-products {
+    background: white;
+}
+
+.no-products h3 {
+    color: #1a1a2e;
+}
+
+.no-products p {
+    color: var(--gray);
+}
+
+/* Mobile Navigation */
+.mobile-nav {
+    background: white;
+    border-right: 1px solid var(--gray-light);
+}
+
+.mobile-nav-btn {
+    color: #1a1a2e;
+}
+
+.mobile-nav-btn:hover {
+    background: var(--gray-light);
+}
+
+.mobile-user-info {
+    background: var(--gray-light);
+}
+
+/* Search Box */
+.search-box {
+    background: white;
+    border: 1px solid var(--gray-light);
+}
+
+.search-box i {
+    color: var(--gray);
+}
+
+.search-box input {
+    background: transparent;
+    color: #1a1a2e;
+}
+
+/* Filter Options */
+.filter-options select {
+    background: white;
+    border: 1px solid var(--gray-light);
+    color: #1a1a2e;
+}
+
+/* Hero Carousel Overlay - Slightly lighter for better text contrast */
+.hero-overlay {
+    background: rgba(0,0,0,0.4);
+}
+
+/* Remove any remaining dark background overrides */
+.full-screen-modal {
+    background: rgba(255,255,255,0.98);
+}
+
+.gallery-main-image {
+    background: var(--gray-light);
+}
+
+.gallery-thumbnails {
+    background: white;
+}
+
+.gallery-nav-arrow {
+    background: rgba(0,0,0,0.5);
+    color: white;
+}
+
+.gallery-nav-arrow:hover {
+    background: rgba(0,0,0,0.8);
+}
+
+/* Make Add to Cart button text white (from black) */
+.product-card .btn-add-to-cart,
+.full-screen-actions .btn-primary {
+    background: var(--primary);
+    color: white !important;
+}
+
+.product-card .btn-add-to-cart:hover,
+.full-screen-actions .btn-primary:hover {
+    background: var(--primary-dark);
+    color: white !important;
+}
+
+/* Disabled button state */
+.product-card .btn-add-to-cart:disabled,
+.full-screen-actions .btn-primary:disabled {
+    background: #ccc;
+    color: #666 !important;
+}
+
+/* Keep dropdown menu readable */
+.dropdown-menu {
+    background: white;
+    border: 1px solid var(--gray-light);
+}
+
+.dropdown-user-info {
+    border-bottom: 1px solid var(--gray-light);
+}
+
+.dropdown-user-email {
+    color: #1a1a2e;
+}
+
+.dropdown-user-role {
+    color: var(--gray);
+}
+
+.dropdown-item {
+    color: #1a1a2e;
+}
+
+.dropdown-item:hover {
+    background: var(--gray-light);
+}
+
+/* Brand Showcase */
+.brand-item {
+    background: white;
+    border: 1px solid var(--gray-light);
+}
+
+.brand-item img {
+    filter: grayscale(100%);
+    opacity: 0.7;
+}
+
+.brand-item:hover img {
+    filter: grayscale(0%);
+    opacity: 1;
+}
+
+/* ==================== PRODUCT CARDS - BLACK THEME ==================== */
+
+/* Override product cards to black background with white text */
+.product-card {
+    background: #000000 !important;
+    color: #ffffff !important;
+    border: 1px solid #333333 !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4) !important;
+    border-color: var(--primary) !important;
+}
+
+/* Product Name - White text */
+.product-card .product-name {
+    color: #ffffff !important;
+}
+
+.product-card .product-name:hover {
+    color: var(--primary) !important;
+}
+
+/* Product Description - Light gray */
+.product-card .product-desc {
+    color: #cccccc !important;
+}
+
+/* Price section */
+.product-card .product-price {
+    color: #ffffff !important;
+}
+
+.product-card .product-price-wrapper .product-original-price {
+    color: #999999 !important;
+}
+
+.product-card .product-price-wrapper .product-actual-price {
+    color: var(--primary) !important;
+}
+
+/* Stock Info */
+.product-card .stock-info {
+    background: rgba(255,255,255,0.1) !important;
+    color: #cccccc !important;
+}
+
+.product-card .stock-info.out-of-stock {
+    background: rgba(220,53,69,0.2) !important;
+    color: #ff9999 !important;
+}
+
+/* Size Selector */
+.product-card .size-selector label {
+    color: #cccccc !important;
+}
+
+.product-card .size-input {
+    background: #1a1a1a !important;
+    color: #ffffff !important;
+    border: 1px solid #444444 !important;
+}
+
+.product-card .size-input option {
+    background: #1a1a1a !important;
+    color: #ffffff !important;
+}
+
+/* Quantity Input */
+.product-card .quantity-input {
+    background: #1a1a1a !important;
+    color: #ffffff !important;
+    border: 1px solid #444444 !important;
+}
+
+/* Add to Cart Button */
+.product-card .btn-add-to-cart {
+    background: var(--primary) !important;
+    color: #000000 !important;
+    border: none !important;
+}
+
+.product-card .btn-add-to-cart:hover {
+    background: var(--primary-dark) !important;
+    color: #000000 !important;
+}
+
+.product-card .btn-add-to-cart:disabled {
+    background: #444444 !important;
+    color: #999999 !important;
+    cursor: not-allowed;
+}
+
+/* Category Badge on Image */
+.product-card .product-category {
+    background: rgba(0,0,0,0.8) !important;
+    color: var(--primary) !important;
+}
+
+/* Image Count Badge */
+.product-card .image-count-badge {
+    background: rgba(0,0,0,0.7) !important;
+    color: white !important;
+}
+
+/* Product Image placeholder */
+.product-card .product-img-placeholder {
+    color: #666666 !important;
+}
+
+/* Ensure all text elements inside product card are white */
+.product-card .product-info,
+.product-card .product-info * {
+    color: inherit;
+}
+
+/* Featured Products Section (Home Page) - Horizontal Layout Black Cards */
+#home .product-card {
+    background: #000000 !important;
+    border: 1px solid #333333 !important;
+}
+
+#home .product-card .product-name {
+    color: #ffffff !important;
+}
+
+#home .product-card .product-actual-price {
+    color: var(--primary) !important;
+}
+
+#home .product-card .stock-info {
+    background: rgba(255,255,255,0.1) !important;
+    color: #cccccc !important;
+}
+
+#home .product-card .size-input,
+#home .product-card .quantity-input {
+    background: #1a1a1a !important;
+    color: #ffffff !important;
+    border: 1px solid #444444 !important;
+}
+
+/* Products Page (Collections) - Horizontal Layout Black Cards */
+#products .product-card {
+    background: #000000 !important;
+    border: 1px solid #333333 !important;
+}
+
+#products .product-card .product-name {
+    color: #ffffff !important;
+}
+
+#products .product-card .product-desc {
+    color: #cccccc !important;
+}
+
+#products .product-card .product-actual-price {
+    color: var(--primary) !important;
+}
+
+/* Admin All Products Section - Black Cards */
+#adminAllProductsGrid .product-card {
+    background: #000000 !important;
+    border: 1px solid #333333 !important;
+}
+
+#adminAllProductsGrid .product-card .product-name {
+    color: #ffffff !important;
+}
+
+#adminAllProductsGrid .product-card .product-desc {
+    color: #cccccc !important;
+}
+
+#adminAllProductsGrid .product-card .product-actual-price {
+    color: var(--primary) !important;
+}
+
+#adminAllProductsGrid .product-card .size-badge {
+    background: var(--primary) !important;
+    color: #000000 !important;
+}
+
+/* Edit buttons inside admin product cards - keep visible */
+#adminAllProductsGrid .product-card .btn-success,
+#adminAllProductsGrid .product-card .btn-danger {
+    background: var(--primary) !important;
+    color: #000000 !important;
+}
+
+#adminAllProductsGrid .product-card .btn-danger {
+    background: var(--danger) !important;
+    color: white !important;
+}
+
+/* Size badge in product cards */
+.product-card .size-badge {
+    background: var(--primary) !important;
+    color: #000000 !important;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+/* Cart page - Keep cart items light (not black) as they are separate */
+.cart-container .product-card {
+    /* Cart items are not product cards, they use cart-item class */
+}
+
+/* Full screen modal - Keep light as it's a modal */
+.full-screen-product {
+    background: white;
+    color: #333;
+}
+
+/* Ensure black cards on all product listing pages */
+.products-grid .product-card {
+    background: #000000 !important;
+}
+
+/* Fix for any inline styles that might override */
+.product-card[style] {
+    background: #000000 !important;
+}
+
+/* ==================== FULL SCREEN PRODUCT MODAL - CLOSE BUTTON BLACK ==================== */
+
+/* Make close button icon black */
+.full-screen-content .close-modal {
+    color: #000000 !important;
+    background: rgba(255, 255, 255, 0.8) !important;
+}
+
+.full-screen-content .close-modal:hover {
+    background: var(--primary) !important;
+    color: #000000 !important;
+}
+
+/* Ensure the close button (× symbol) is black */
+.full-screen-content .close-modal::before {
+    color: #000000 !important;
+}
+
+/* Alternative selector to ensure close button text is black */
+.modal.full-screen-modal .close-modal {
+    color: #000000 !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-radius: 50% !important;
+    width: 40px !important;
+    height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.8rem !important;
+    font-weight: bold !important;
+}
+
+.modal.full-screen-modal .close-modal:hover {
+    background: var(--primary) !important;
+    color: #ffffff !important;
+}
+
+/* For any other close buttons in modals that need black text */
+.modal .close-modal {
+    color: #000000 !important;
+    background: rgba(255, 255, 255, 0.8) !important;
+}
+
+.modal .close-modal:hover {
+    background: var(--primary) !important;
+    color: #ffffff !important;
+}
+
+/* Specific fix for full screen product modal close button */
+#fullScreenProductModal .close-modal {
+    color: #000000 !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-radius: 50% !important;
+    width: 40px !important;
+    height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.8rem !important;
+    font-weight: bold !important;
+    z-index: 100 !important;
+}
+
+#fullScreenProductModal .close-modal:hover {
+    background: var(--primary) !important;
+    color: #ffffff !important;
+}
+
+/* ==================== FULL SCREEN PRODUCT MODAL - CLOSE BUTTON TEXT BLACK ==================== */
+
+/* Make the close button text (×) black */
+.full-screen-content .close-modal {
+    color: #000000 !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-radius: 50% !important;
+    width: 40px !important;
+    height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 28px !important;
+    font-weight: bold !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+}
+
+.full-screen-content .close-modal:hover {
+    background: var(--primary) !important;
+    color: #ffffff !important;
+}
+
+/* Specific selector for full screen modal */
+#fullScreenProductModal .close-modal {
+    color: #000000 !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-radius: 50% !important;
+    width: 40px !important;
+    height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 28px !important;
+    font-weight: bold !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+}
+
+#fullScreenProductModal .close-modal:hover {
+    background: var(--primary) !important;
+    color: #ffffff !important;
+}
+
+/* Ensure the × symbol is black */
+#fullScreenProductModal .close-modal,
+.full-screen-modal .close-modal {
+    color: #000000 !important;
+}
+
+#fullScreenProductModal .close-modal span,
+.full-screen-modal .close-modal span {
+    color: #000000 !important;
+}
+
+/* ==================== FULL SCREEN MODAL - CLOSE BUTTON TEXT BLACK ==================== */
+
+/* Make the secondary Close button text black */
+.full-screen-actions .btn-secondary {
+    background: transparent !important;
+    color: #000000 !important;
+    border: 1px solid #cccccc !important;
+}
+
+.full-screen-actions .btn-secondary:hover {
+    background: var(--primary) !important;
+    color: #ffffff !important;
+    border-color: var(--primary) !important;
+}
+
+/* Alternative selector for the Close button */
+.full-screen-details .full-screen-actions .btn-secondary {
+    color: #000000 !important;
+    background: #f0f0f0 !important;
+    border: 1px solid #dddddd !important;
+}
+
+.full-screen-details .full-screen-actions .btn-secondary:hover {
+    background: var(--primary) !important;
+    color: #ffffff !important;
+    border-color: var(--primary) !important;
+}
+
+/* Specific selector for the Close button in full screen modal */
+#fullScreenProductContent .btn-secondary {
+    color: #000000 !important;
+    background: #f5f5f5 !important;
+    border: 1px solid #dddddd !important;
+}
+
+#fullScreenProductContent .btn-secondary:hover {
+    background: var(--primary) !important;
+    color: #ffffff !important;
+    border-color: var(--primary) !important;
+}
+
+/* ==================== PRODUCT CARDS - WHITE BACKGROUND WITH BLACK TEXT ==================== */
+
+/* Make all product cards white with black text */
+.product-card {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #e0e0e0 !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15) !important;
+    border-color: var(--primary) !important;
+}
+
+/* Product Name - Black text */
+.product-card .product-name {
+    color: #000000 !important;
+}
+
+.product-card .product-name:hover {
+    color: var(--primary) !important;
+}
+
+/* Product Description - Dark gray */
+.product-card .product-desc {
+    color: #555555 !important;
+}
+
+/* Price section */
+.product-card .product-price {
+    color: #000000 !important;
+}
+
+.product-card .product-price-wrapper .product-original-price {
+    color: #999999 !important;
+}
+
+.product-card .product-price-wrapper .product-actual-price {
+    color: var(--primary) !important;
+}
+
+/* Stock Info */
+.product-card .stock-info {
+    background: #f5f5f5 !important;
+    color: #666666 !important;
+}
+
+.product-card .stock-info.out-of-stock {
+    background: #fee !important;
+    color: var(--danger) !important;
+}
+
+/* Size Selector */
+.product-card .size-selector label {
+    color: #555555 !important;
+}
+
+.product-card .size-input {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #dddddd !important;
+}
+
+.product-card .size-input option {
+    background: #ffffff !important;
+    color: #000000 !important;
+}
+
+/* Quantity Input */
+.product-card .quantity-input {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #dddddd !important;
+}
+
+/* Add to Cart Button */
+.product-card .btn-add-to-cart {
+    background: var(--primary) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+.product-card .btn-add-to-cart:hover {
+    background: var(--primary-dark) !important;
+    color: #ffffff !important;
+}
+
+.product-card .btn-add-to-cart:disabled {
+    background: #cccccc !important;
+    color: #666666 !important;
+    cursor: not-allowed;
+}
+
+/* Category Badge on Image */
+.product-card .product-category {
+    background: rgba(0,0,0,0.7) !important;
+    color: #ffffff !important;
+}
+
+/* Image Count Badge */
+.product-card .image-count-badge {
+    background: rgba(0,0,0,0.6) !important;
+    color: #ffffff !important;
+}
+
+/* Product Image placeholder */
+.product-card .product-img-placeholder {
+    color: #cccccc !important;
+}
+
+/* Ensure all text elements inside product card are dark */
+.product-card .product-info,
+.product-card .product-info * {
+    color: inherit;
+}
+
+/* Featured Products Section (Home Page) - Horizontal Layout White Cards */
+#home .product-card {
+    background: #ffffff !important;
+    border: 1px solid #e0e0e0 !important;
+}
+
+#home .product-card .product-name {
+    color: #000000 !important;
+}
+
+#home .product-card .product-actual-price {
+    color: var(--primary) !important;
+}
+
+#home .product-card .stock-info {
+    background: #f5f5f5 !important;
+    color: #666666 !important;
+}
+
+#home .product-card .size-input,
+#home .product-card .quantity-input {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #dddddd !important;
+}
+
+/* Products Page (Collections) - Horizontal Layout White Cards */
+#products .product-card {
+    background: #ffffff !important;
+    border: 1px solid #e0e0e0 !important;
+}
+
+#products .product-card .product-name {
+    color: #000000 !important;
+}
+
+#products .product-card .product-desc {
+    color: #555555 !important;
+}
+
+#products .product-card .product-actual-price {
+    color: var(--primary) !important;
+}
+
+/* Admin All Products Section - White Cards */
+#adminAllProductsGrid .product-card {
+    background: #ffffff !important;
+    border: 1px solid #e0e0e0 !important;
+}
+
+#adminAllProductsGrid .product-card .product-name {
+    color: #000000 !important;
+}
+
+#adminAllProductsGrid .product-card .product-desc {
+    color: #555555 !important;
+}
+
+#adminAllProductsGrid .product-card .product-actual-price {
+    color: var(--primary) !important;
+}
+
+#adminAllProductsGrid .product-card .size-badge {
+    background: var(--primary) !important;
+    color: #ffffff !important;
+}
+
+/* Size badge in product cards */
+.product-card .size-badge {
+    background: var(--primary) !important;
+    color: #ffffff !important;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+/* Ensure black cards on all product listing pages */
+.products-grid .product-card {
+    background: #ffffff !important;
+}
+
+/* Fix for any inline styles that might override */
+.product-card[style] {
+    background: #ffffff !important;
+}
+
+/* ==================== QUANTITY TEXT BLACK ==================== */
+
+/* Make quantity number text black */
+.product-card .quantity-input {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #dddddd !important;
+}
+
+/* Quantity label text black */
+.product-card .quantity-selector label {
+    color: #000000 !important;
+}
+
+/* Quantity number display in cart */
+.quantity-number {
+    color: #000000 !important;
+}
+
+/* Cart quantity display text */
+.cart-item-actions span {
+    color: #000000 !important;
+}
+
+/* Product card quantity value text */
+.product-card .quantity-input::placeholder {
+    color: #999999 !important;
+}
+
+/* Quantity input focus state */
+.product-card .quantity-input:focus {
+    border-color: var(--primary) !important;
+    outline: none !important;
+}
+
+/* Quantity number in cart page */
+.cart-item-actions .quantity-number {
+    color: #000000 !important;
+    font-weight: 600 !important;
+}
+
+/* For the quantity selector in product cards */
+.product-card .quantity-selector {
+    margin-bottom: 10px;
+}
+
+.product-card .quantity-selector label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-right: 8px;
+}
+
+/* Ensure quantity text is black in all product cards */
+#home .product-card .quantity-input,
+#products .product-card .quantity-input,
+#adminAllProductsGrid .product-card .quantity-input {
+    color: #000000 !important;
+}
+
+/* Quantity buttons in cart - keep white text on dark background */
+.cart-item-actions .btn-secondary {
+    background: #333333 !important;
+    color: #ffffff !important;
+}
+
+.cart-item-actions .btn-secondary i {
+    color: #ffffff !important;
+}
+
+/* Quantity text in checkout form */
+.checkout-form .quantity-display {
+    color: #000000 !important;
+}
     </style>
 </head>
 <body>
