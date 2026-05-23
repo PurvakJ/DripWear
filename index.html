@@ -7514,6 +7514,260 @@ button.btn-secondary[onclick="switchAuthTab('signup')"],
     transform: translateY(-50%);
     z-index: 1;
 }
+
+/* Cart Page CSS Fixes */
+.cart-container {
+    background: var(--light);
+    border: 1px solid var(--gray-light);
+    padding: 1.5rem;
+}
+
+.cart-title {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--gray-light);
+    color: var(--primary);
+}
+
+.cart-items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.cart-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--dark);
+    border: 1px solid var(--gray-light);
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+@media (min-width: 769px) {
+    .cart-item {
+        flex-wrap: nowrap;
+    }
+}
+
+.cart-item-image {
+    width: 100px;
+    height: 100px;
+    background: #222;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.cart-item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cart-item-image i {
+    font-size: 2.5rem;
+    color: var(--gray);
+}
+
+.cart-item-info {
+    flex: 2;
+    min-width: 150px;
+}
+
+.cart-item-info h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: var(--primary);
+}
+
+.cart-item-info p {
+    font-size: 0.75rem;
+    color: var(--gray);
+    margin-bottom: 0.5rem;
+}
+
+.size-badge {
+    background: var(--primary);
+    color: var(--dark);
+    padding: 2px 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.cart-item-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-shrink: 0;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.quantity-btn {
+    background: white !important;
+    color: black !important;
+    border: 1px solid var(--gray-light) !important;
+    padding: 6px 10px !important;
+    font-size: 0.8rem !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.quantity-btn:hover {
+    background: var(--gray) !important;
+    color: white !important;
+}
+
+.quantity-number {
+    min-width: 35px;
+    text-align: center;
+    font-weight: 600;
+    color: var(--primary);
+    font-size: 1rem;
+}
+
+.cart-item-price {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--primary);
+    min-width: 80px;
+    text-align: right;
+}
+
+.remove-btn {
+    background: var(--danger);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.remove-btn:hover {
+    background: #ff4444;
+}
+
+.cart-total {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--primary);
+    text-align: right;
+}
+
+.total-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.total-row span:first-child {
+    color: var(--gray);
+}
+
+.total-amount {
+    color: var(--primary);
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.stock-warning {
+    background: rgba(220, 53, 69, 0.2);
+    color: #ff9999;
+    padding: 10px;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-size: 0.8rem;
+}
+
+.cart-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.checkout-btn {
+    background: var(--primary);
+    color: var(--dark);
+    padding: 10px 24px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.checkout-btn:hover {
+    background: var(--gray);
+}
+
+.checkout-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.clear-cart-btn {
+    background: white !important;
+    color: black !important;
+    border: 1px solid var(--gray-light) !important;
+    padding: 10px 24px !important;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.clear-cart-btn:hover {
+    background: var(--gray) !important;
+    color: white !important;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .cart-item {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .cart-item-image {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto;
+    }
+    
+    .cart-item-actions {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .cart-item-price {
+        text-align: center;
+    }
+    
+    .cart-actions {
+        flex-direction: column;
+    }
+    
+    .checkout-btn, .clear-cart-btn {
+        width: 100%;
+    }
+    
+    .total-row {
+        justify-content: center;
+    }
+}
     </style>
 </head>
 <body>
@@ -12241,7 +12495,88 @@ async function resetForgotPassword() {
 
 // Remove the old changePassword function and related code
 // Remove toggleChangePasswordModal function as it's replaced
-
+function renderCart() {
+    const container = document.getElementById('cartContent');
+    if (!cartItems || cartItems.length === 0) {
+        container.innerHTML = `
+            <div class="cart-container" style="text-align: center; padding: 3rem;">
+                <i class="fas fa-shopping-cart" style="font-size: 4rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                <h3>Your cart is empty</h3>
+                <p>Add some products to your cart</p>
+                <button class="btn btn-primary" onclick="showPage('products')"><i class="fas fa-store"></i> Continue Shopping</button>
+            </div>
+        `;
+        updateCartCount();
+        return;
+    }
+    
+    let subtotal = 0;
+    let itemsHTML = '';
+    let stockIssues = false;
+    
+    cartItems.forEach((item, index) => {
+        const availableStock = item.stock || 0;
+        const itemTotal = Number(item.price) * (item.quantity || 1);
+        subtotal += itemTotal;
+        const exceedsStock = (item.quantity || 1) > availableStock;
+        if (exceedsStock) stockIssues = true;
+        
+        itemsHTML += `
+            <div class="cart-item">
+                <div class="cart-item-image">
+                    ${item.imageUrl ? `<img src="${item.imageUrl}" alt="${item.name}" onerror="this.style.display='none'">` : '<i class="fas fa-box"></i>'}
+                </div>
+                <div class="cart-item-info">
+                    <h4 class="cart-item-name">${item.name}</h4>
+                    ${item.desc ? `<p class="cart-item-desc">${item.desc.substring(0, 60)}${item.desc.length > 60 ? '...' : ''}</p>` : ''}
+                    <div><span class="size-badge">Size: ${item.size || 'M'}</span></div>
+                    ${exceedsStock ? `<div class="stock-info out-of-stock"><i class="fas fa-exclamation-triangle"></i> Only ${availableStock} units available!</div>` : ''}
+                </div>
+                <div class="cart-item-actions">
+                    <div class="quantity-controls">
+                        <button class="btn-secondary quantity-btn" onclick="updateCartQuantity(${index}, -1)">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <span class="quantity-number">${item.quantity || 1}</span>
+                        <button class="btn-secondary quantity-btn" onclick="updateCartQuantity(${index}, 1)">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    <span class="cart-item-price">₹${itemTotal.toFixed(2)}</span>
+                    <button class="btn-danger remove-btn" onclick="removeCartItem(${index})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    });
+    
+    originalSubtotal = subtotal;
+    container.innerHTML = `
+        <div class="cart-container">
+            <h3 class="cart-title">Cart Items (${cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0)} items)</h3>
+            <div class="cart-items-list">
+                ${itemsHTML}
+            </div>
+            <div class="cart-total">
+                <div class="total-row">
+                    <span>Subtotal:</span>
+                    <span class="total-amount">₹${subtotal.toFixed(2)}</span>
+                </div>
+                ${stockIssues ? `<div class="stock-warning"><i class="fas fa-exclamation-triangle"></i> Some items exceed available stock. Please adjust quantities.</div>` : ''}
+                <div class="cart-actions">
+                    <button class="btn-primary checkout-btn" onclick="showCheckoutForm()" ${stockIssues ? 'disabled' : ''}>
+                        <i class="fas fa-lock"></i> Proceed to Checkout
+                    </button>
+                    <button class="btn-secondary clear-cart-btn" onclick="clearCart()">
+                        <i class="fas fa-trash"></i> Clear Cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    updateCartCount();
+}
     </script>
 </body>
 </html>
