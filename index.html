@@ -7773,9 +7773,9 @@ button.btn-secondary[onclick="switchAuthTab('signup')"],
 
 /* Override root variables for Light Theme */
 :root {
-    --primary: #b87c4f;
-    --primary-dark: #9a623d;
-    --primary-light: #d4a373;
+    --primary: #000000;
+    --primary-dark: #000000;
+    --primary-light: #000000;
     --secondary: #f8f9fa;
     --dark: #ffffff;
     --light: #f8f9fa;
@@ -9312,6 +9312,172 @@ header {
 .checkout-form .quantity-display {
     color: #000000 !important;
 }
+
+/* ==================== NEW BADGE TEXT WHITE IN ORDERS ==================== */
+
+/* Make NEW badge text white */
+.order-card .new-badge,
+.new-badge {
+    background: var(--primary) !important;
+    color: #ffffff !important;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+/* Ensure the NEW text is white in both user orders and admin orders */
+.order-header .new-badge,
+.order-card .order-header .new-badge,
+#ordersContent .new-badge,
+#adminOrders .new-badge {
+    color: #ffffff !important;
+    background: var(--primary) !important;
+}
+
+/* For any other new badges that might appear */
+span.new-badge,
+div.new-badge {
+    color: #ffffff !important;
+}
+
+/* ==================== CHOOSE IMAGES BUTTON TEXT WHITE IN ADMIN ==================== */
+
+/* Make Choose Images button text white */
+.file-input-label {
+    display: inline-block;
+    padding: 10px 24px;
+    background: var(--primary);
+    color: #ffffff !important;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.file-input-label:hover {
+    background: var(--primary-dark);
+    color: #ffffff !important;
+}
+
+/* Ensure the icon inside is also white */
+.file-input-label i {
+    color: #ffffff !important;
+}
+
+/* For the edit product modal as well */
+#editProductModal .file-input-label,
+#addProductSection .file-input-label,
+#manageProductsSection .file-input-label,
+#allProductsSection .file-input-label {
+    color: #ffffff !important;
+}
+
+#editProductModal .file-input-label i,
+#addProductSection .file-input-label i,
+#manageProductsSection .file-input-label i,
+#allProductsSection .file-input-label i {
+    color: #ffffff !important;
+}
+
+/* Also for the "Add More Images" button in edit product */
+#editProductImages + .file-input-label {
+    color: #ffffff !important;
+}
+
+#editProductImages + .file-input-label i {
+    color: #ffffff !important;
+}
+
+/* Ensure the button text stays white on hover */
+.file-input-label:hover {
+    color: #ffffff !important;
+}
+
+.file-input-label:hover i {
+    color: #ffffff !important;
+}
+
+/* ==================== PRODUCT EDIT TEXT WHITE IN ADMIN ==================== */
+
+/* Make all edit buttons text white */
+.btn-success {
+    background: var(--success) !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+.btn-success:hover {
+    background: #218838 !important;
+    color: #ffffff !important;
+}
+
+/* Make all edit button icons white */
+.btn-success i {
+    color: #ffffff !important;
+}
+
+/* Edit button in admin product items */
+.admin-product-actions .btn-success {
+    background: var(--success) !important;
+    color: #ffffff !important;
+}
+
+.admin-product-actions .btn-success i {
+    color: #ffffff !important;
+}
+
+.admin-product-actions .btn-success:hover {
+    background: #218838 !important;
+    color: #ffffff !important;
+}
+
+/* Edit button in admin all products grid */
+#adminAllProductsGrid .btn-success {
+    background: var(--success) !important;
+    color: #ffffff !important;
+}
+
+#adminAllProductsGrid .btn-success i {
+    color: #ffffff !important;
+}
+
+#adminAllProductsGrid .btn-success:hover {
+    background: #218838 !important;
+    color: #ffffff !important;
+}
+
+/* Update button in edit product modal */
+#editProductModal .btn-success {
+    background: var(--success) !important;
+    color: #ffffff !important;
+}
+
+#editProductModal .btn-success i {
+    color: #ffffff !important;
+}
+
+#editProductModal .btn-success:hover {
+    background: #218838 !important;
+    color: #ffffff !important;
+}
+
+/* Any other edit/update buttons */
+button.btn-success,
+a.btn-success,
+.btn-success:not(.btn-danger) {
+    color: #ffffff !important;
+}
+
+button.btn-success i,
+a.btn-success i {
+    color: #ffffff !important;
+}
+
+
     </style>
 </head>
 <body>
