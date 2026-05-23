@@ -8,6 +8,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <meta name="google-site-verification" content="tbxyaobXl6Nen6_VRPxMur8JpbNj934QNE2AE1NnAC8" />
     <style>
         * {
             margin: 0;
@@ -11441,6 +11442,441 @@ function startOtpTimer() {
     }, 1000);
 }
 
+// Replace the existing toggleAuthModal function
+function toggleAuthModal() {
+    const modal = document.getElementById('authModal');
+    if (modal.style.display === 'flex') {
+        modal.style.display = 'none';
+        // Reset form fields when closing
+        document.getElementById('email').value = '';
+        document.getElementById('password').value = '';
+        document.getElementById('signupEmail').value = '';
+        document.getElementById('signupPassword').value = '';
+        document.getElementById('signupConfirmPassword').value = '';
+    } else {
+        modal.style.display = 'flex';
+        switchAuthTab('login');
+    }
+}
+
+// Replace the existing updateAuthUI function
+function updateAuthUI() {
+    const mobileUserInfo = document.getElementById('mobileUserInfo');
+    const mobileUserEmail = document.getElementById('mobileUserEmail');
+    const mobileUserRole = document.getElementById('mobileUserRole');
+    const mobileAuthBtn = document.getElementById('mobileAuthBtn');
+    const mobileOrdersBtn = document.getElementById('mobileOrdersBtn');
+    const mobileAdminBtn = document.getElementById('mobileAdminBtn');
+    const mobileChangePasswordBtn = document.getElementById('mobileChangePasswordBtn');
+    
+    // Dropdown elements
+    const dropdownUserInfo = document.getElementById('dropdownUserInfo');
+    const dropdownUserEmail = document.getElementById('dropdownUserEmail');
+    const dropdownUserRole = document.getElementById('dropdownUserRole');
+    const dropdownChangePasswordBtn = document.getElementById('dropdownChangePasswordBtn');
+    const dropdownLogoutBtn = document.getElementById('dropdownLogoutBtn');
+    const dropdownLoginBtn = document.getElementById('dropdownLoginBtn');
+    const ordersBtn = document.getElementById('ordersBtn');
+    const adminBtn = document.getElementById('adminBtn');
+    
+    if (user) {
+        // User is logged in
+        mobileUserInfo.style.display = 'block';
+        mobileUserEmail.textContent = user;
+        mobileUserRole.textContent = role === 'admin' ? 'Admin' : 'User';
+        
+        // Update dropdown for logged in user
+        dropdownUserInfo.style.display = 'block';
+        dropdownUserEmail.textContent = user;
+        dropdownUserRole.textContent = role === 'admin' ? 'Admin' : 'User';
+        dropdownChangePasswordBtn.style.display = 'flex';
+        dropdownLogoutBtn.style.display = 'flex';
+        dropdownLoginBtn.style.display = 'none';
+        
+        ordersBtn.style.display = 'flex';
+        
+        mobileAuthBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
+        mobileAuthBtn.onclick = function(e) { 
+            e.preventDefault();
+            logout(); 
+            closeMobileMenu(); 
+        };
+        mobileOrdersBtn.style.display = 'flex';
+        
+        mobileChangePasswordBtn.style.display = 'flex';
+        mobileChangePasswordBtn.onclick = function(e) { 
+            e.preventDefault();
+            toggleChangePasswordModal(); 
+            closeMobileMenu(); 
+        };
+        
+        if (role === 'admin') {
+            adminBtn.style.display = 'flex';
+            mobileAdminBtn.style.display = 'flex';
+        } else {
+            adminBtn.style.display = 'none';
+            mobileAdminBtn.style.display = 'none';
+        }
+    } else {
+        // User is NOT logged in
+        mobileUserInfo.style.display = 'none';
+        
+        // Update dropdown for logged out user
+        dropdownUserInfo.style.display = 'none';
+        dropdownChangePasswordBtn.style.display = 'none';
+        dropdownLogoutBtn.style.display = 'none';
+        dropdownLoginBtn.style.display = 'flex';
+        
+        ordersBtn.style.display = 'none';
+        
+        // Fix for mobile login button - ensure it works on first click
+        mobileAuthBtn.innerHTML = '<i class="fas fa-user"></i> Login';
+        mobileAuthBtn.onclick = function(e) { 
+            e.preventDefault();
+            e.stopPropagation();
+            toggleAuthModal(); 
+            closeMobileMenu(); 
+        };
+        
+        mobileOrdersBtn.style.display = 'none';
+        mobileAdminBtn.style.display = 'none';
+        adminBtn.style.display = 'none';
+        mobileChangePasswordBtn.style.display = 'none';
+    }
+}
+
+// Replace the DOMContentLoaded event listener
+document.addEventListener('DOMContentLoaded', function() {
+    checkAuth();
+    loadProducts();
+    initCarousel();
+    initEmailJS();
+    
+    // Get references to file inputs
+    const productImagesInput = document.getElementById('productImages');
+    if (productImagesInput) {
+        productImagesInput.addEventListener('change', handleImageSelection);
+    }
+    
+    const editProductImagesInput = document.getElementById('editProductImages');
+    if (editProductImagesInput) {
+        editProductImagesInput.addEventListener('change', handleEditImageSelection);
+    }
+    
+    // Size checkbox listeners
+    const sizeCheckboxes = document.querySelectorAll('#sizeCheckboxGroup input[type="checkbox"]');
+    sizeCheckboxes.forEach(cb => cb.addEventListener('change', updateSelectedSizesDisplay));
+    
+    const editSizeCheckboxes = document.querySelectorAll('#editSizeCheckboxGroup input[type="checkbox"]');
+    editSizeCheckboxes.forEach(cb => cb.addEventListener('change', updateEditSelectedSizesDisplay));
+    
+    // Hamburger menu
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', toggleMobileMenu);
+    }
+    
+    // User Dropdown Toggle
+    const userMenuBtn = document.getElementById('userMenuBtn');
+    const userDropdown = document.getElementById('userDropdown');
+    
+    if (userMenuBtn && userDropdown) {
+        userMenuBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            userDropdown.classList.toggle('active');
+        });
+    }
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (userDropdown && !userDropdown.contains(e.target)) {
+            userDropdown.classList.remove('active');
+        }
+    });
+    
+    // Close modals when clicking outside
+    window.addEventListener('click', function(e) {
+        const authModal = document.getElementById('authModal');
+        if (e.target === authModal) {
+            authModal.style.display = 'none';
+        }
+        const otpModal = document.getElementById('otpModal');
+        if (e.target === otpModal) {
+            otpModal.style.display = 'none';
+        }
+    });
+    
+    // Fix for mobile auth button - re-attach after any potential conflicts
+    const mobileAuthBtn = document.getElementById('mobileAuthBtn');
+    if (mobileAuthBtn) {
+        // Remove any existing listeners
+        const newMobileAuthBtn = mobileAuthBtn.cloneNode(true);
+        mobileAuthBtn.parentNode.replaceChild(newMobileAuthBtn, mobileAuthBtn);
+        newMobileAuthBtn.onclick = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (user) {
+                logout();
+            } else {
+                toggleAuthModal();
+            }
+            closeMobileMenu();
+        };
+    }
+});
+
+// Replace the DOMContentLoaded event listener with this updated version
+document.addEventListener('DOMContentLoaded', function() {
+    checkAuth();
+    loadProducts();
+    initCarousel();
+    initEmailJS();
+    
+    // Get references to file inputs
+    const productImagesInput = document.getElementById('productImages');
+    if (productImagesInput) {
+        productImagesInput.addEventListener('change', handleImageSelection);
+    }
+    
+    const editProductImagesInput = document.getElementById('editProductImages');
+    if (editProductImagesInput) {
+        editProductImagesInput.addEventListener('change', handleEditImageSelection);
+    }
+    
+    // Size checkbox listeners
+    const sizeCheckboxes = document.querySelectorAll('#sizeCheckboxGroup input[type="checkbox"]');
+    sizeCheckboxes.forEach(cb => cb.addEventListener('change', updateSelectedSizesDisplay));
+    
+    const editSizeCheckboxes = document.querySelectorAll('#editSizeCheckboxGroup input[type="checkbox"]');
+    editSizeCheckboxes.forEach(cb => cb.addEventListener('change', updateEditSelectedSizesDisplay));
+    
+    // Hamburger menu
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', toggleMobileMenu);
+    }
+    
+    // User Dropdown Toggle - FIXED for desktop
+    const userMenuBtn = document.getElementById('userMenuBtn');
+    const userDropdown = document.getElementById('userDropdown');
+    
+    if (userMenuBtn && userDropdown) {
+        // Remove any existing listeners to prevent duplicates
+        const newUserMenuBtn = userMenuBtn.cloneNode(true);
+        userMenuBtn.parentNode.replaceChild(newUserMenuBtn, userMenuBtn);
+        
+        newUserMenuBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            userDropdown.classList.toggle('active');
+        });
+        
+        // Update the global reference
+        window.userMenuBtn = newUserMenuBtn;
+    }
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        const dropdown = document.getElementById('userDropdown');
+        const menuBtn = document.getElementById('userMenuBtn');
+        if (dropdown && menuBtn) {
+            if (!dropdown.contains(e.target) && e.target !== menuBtn && !menuBtn.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        }
+    });
+    
+    // Close modals when clicking outside
+    window.addEventListener('click', function(e) {
+        const authModal = document.getElementById('authModal');
+        if (e.target === authModal) {
+            authModal.style.display = 'none';
+        }
+        const otpModal = document.getElementById('otpModal');
+        if (e.target === otpModal) {
+            otpModal.style.display = 'none';
+        }
+    });
+    
+    // Fix for mobile auth button
+    const mobileAuthBtn = document.getElementById('mobileAuthBtn');
+    if (mobileAuthBtn) {
+        const newMobileAuthBtn = mobileAuthBtn.cloneNode(true);
+        mobileAuthBtn.parentNode.replaceChild(newMobileAuthBtn, mobileAuthBtn);
+        newMobileAuthBtn.onclick = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (user) {
+                logout();
+            } else {
+                toggleAuthModal();
+            }
+            closeMobileMenu();
+        };
+    }
+});
+
+// Update the updateAuthUI function to ensure dropdown buttons work after login/logout
+function updateAuthUI() {
+    const mobileUserInfo = document.getElementById('mobileUserInfo');
+    const mobileUserEmail = document.getElementById('mobileUserEmail');
+    const mobileUserRole = document.getElementById('mobileUserRole');
+    const mobileAuthBtn = document.getElementById('mobileAuthBtn');
+    const mobileOrdersBtn = document.getElementById('mobileOrdersBtn');
+    const mobileAdminBtn = document.getElementById('mobileAdminBtn');
+    const mobileChangePasswordBtn = document.getElementById('mobileChangePasswordBtn');
+    
+    // Dropdown elements
+    const dropdownUserInfo = document.getElementById('dropdownUserInfo');
+    const dropdownUserEmail = document.getElementById('dropdownUserEmail');
+    const dropdownUserRole = document.getElementById('dropdownUserRole');
+    const dropdownChangePasswordBtn = document.getElementById('dropdownChangePasswordBtn');
+    const dropdownLogoutBtn = document.getElementById('dropdownLogoutBtn');
+    const dropdownLoginBtn = document.getElementById('dropdownLoginBtn');
+    const ordersBtn = document.getElementById('ordersBtn');
+    const adminBtn = document.getElementById('adminBtn');
+    const userDropdown = document.getElementById('userDropdown');
+    
+    if (user) {
+        // User is logged in
+        mobileUserInfo.style.display = 'block';
+        mobileUserEmail.textContent = user;
+        mobileUserRole.textContent = role === 'admin' ? 'Admin' : 'User';
+        
+        // Update dropdown for logged in user
+        if (dropdownUserInfo) dropdownUserInfo.style.display = 'block';
+        if (dropdownUserEmail) dropdownUserEmail.textContent = user;
+        if (dropdownUserRole) dropdownUserRole.textContent = role === 'admin' ? 'Admin' : 'User';
+        if (dropdownChangePasswordBtn) dropdownChangePasswordBtn.style.display = 'flex';
+        if (dropdownLogoutBtn) dropdownLogoutBtn.style.display = 'flex';
+        if (dropdownLoginBtn) dropdownLoginBtn.style.display = 'none';
+        
+        if (ordersBtn) ordersBtn.style.display = 'flex';
+        
+        if (mobileAuthBtn) {
+            mobileAuthBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
+            mobileAuthBtn.onclick = function(e) { 
+                e.preventDefault();
+                logout(); 
+                closeMobileMenu(); 
+            };
+        }
+        if (mobileOrdersBtn) mobileOrdersBtn.style.display = 'flex';
+        
+        if (mobileChangePasswordBtn) {
+            mobileChangePasswordBtn.style.display = 'flex';
+            mobileChangePasswordBtn.onclick = function(e) { 
+                e.preventDefault();
+                toggleChangePasswordModal(); 
+                closeMobileMenu(); 
+            };
+        }
+        
+        if (role === 'admin') {
+            if (adminBtn) adminBtn.style.display = 'flex';
+            if (mobileAdminBtn) mobileAdminBtn.style.display = 'flex';
+        } else {
+            if (adminBtn) adminBtn.style.display = 'none';
+            if (mobileAdminBtn) mobileAdminBtn.style.display = 'none';
+        }
+        
+        // Re-attach dropdown logout button event
+        if (dropdownLogoutBtn) {
+            const newLogoutBtn = dropdownLogoutBtn.cloneNode(true);
+            dropdownLogoutBtn.parentNode.replaceChild(newLogoutBtn, dropdownLogoutBtn);
+            newLogoutBtn.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                logout();
+                if (userDropdown) userDropdown.classList.remove('active');
+            };
+        }
+        
+        // Re-attach dropdown change password button event
+        if (dropdownChangePasswordBtn) {
+            const newChangePwdBtn = dropdownChangePasswordBtn.cloneNode(true);
+            dropdownChangePasswordBtn.parentNode.replaceChild(newChangePwdBtn, dropdownChangePasswordBtn);
+            newChangePwdBtn.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleChangePasswordModal();
+                if (userDropdown) userDropdown.classList.remove('active');
+            };
+        }
+        
+    } else {
+        // User is NOT logged in
+        if (mobileUserInfo) mobileUserInfo.style.display = 'none';
+        
+        // Update dropdown for logged out user
+        if (dropdownUserInfo) dropdownUserInfo.style.display = 'none';
+        if (dropdownChangePasswordBtn) dropdownChangePasswordBtn.style.display = 'none';
+        if (dropdownLogoutBtn) dropdownLogoutBtn.style.display = 'none';
+        if (dropdownLoginBtn) dropdownLoginBtn.style.display = 'flex';
+        
+        if (ordersBtn) ordersBtn.style.display = 'none';
+        
+        if (mobileAuthBtn) {
+            mobileAuthBtn.innerHTML = '<i class="fas fa-user"></i> Login';
+            mobileAuthBtn.onclick = function(e) { 
+                e.preventDefault();
+                e.stopPropagation();
+                toggleAuthModal(); 
+                closeMobileMenu(); 
+            };
+        }
+        if (mobileOrdersBtn) mobileOrdersBtn.style.display = 'none';
+        if (mobileAdminBtn) mobileAdminBtn.style.display = 'none';
+        if (adminBtn) adminBtn.style.display = 'none';
+        if (mobileChangePasswordBtn) mobileChangePasswordBtn.style.display = 'none';
+        
+        // Re-attach dropdown login button event
+        if (dropdownLoginBtn) {
+            const newLoginBtn = dropdownLoginBtn.cloneNode(true);
+            dropdownLoginBtn.parentNode.replaceChild(newLoginBtn, dropdownLoginBtn);
+            newLoginBtn.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleAuthModal();
+                if (userDropdown) userDropdown.classList.remove('active');
+            };
+        }
+    }
+}
+
+// Update the closeDropdown function
+function closeDropdown() {
+    const userDropdown = document.getElementById('userDropdown');
+    if (userDropdown) {
+        userDropdown.classList.remove('active');
+    }
+}
+
+// Update toggleMobileMenu to close dropdown when mobile menu opens
+function toggleMobileMenu() {
+    const mobileNav = document.getElementById('mobileNav');
+    const hamburger = document.getElementById('hamburgerBtn');
+    const userDropdown = document.getElementById('userDropdown');
+    
+    // Close desktop dropdown when mobile menu opens
+    if (userDropdown) {
+        userDropdown.classList.remove('active');
+    }
+    
+    if (mobileNav.classList.contains('active')) {
+        mobileNav.classList.remove('active');
+        const spans = hamburger.querySelectorAll('span');
+        spans[0].style.transform = 'none';
+        spans[1].style.opacity = '1';
+        spans[2].style.transform = 'none';
+    } else {
+        mobileNav.classList.add('active');
+        const spans = hamburger.querySelectorAll('span');
+        spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+        spans[1].style.opacity = '0';
+        spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+    }
+}
 
     </script>
 </body>
